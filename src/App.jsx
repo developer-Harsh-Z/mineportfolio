@@ -1,4 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Environment, ContactShadows } from '@react-three/drei';
+import HeroModel from './HeroModel';
 import './index.css';
 
 function App() {
@@ -192,7 +195,18 @@ function App() {
       </div>
 
       <section id="hero" className="hero">
-        <div className="hero-content">
+        <div className="hero-model-container" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: 'none' }}>
+          <Canvas eventSource={document.documentElement} camera={{ position: [0, 1.5, 6], fov: 45 }}>
+            <ambientLight intensity={0.5} />
+            <spotLight position={[5, 10, 5]} angle={0.25} penumbra={1} />
+            <Suspense fallback={null}>
+              <HeroModel />
+              <Environment preset="city" />
+              <ContactShadows position={[0, -2, 0]} opacity={0.4} scale={10} blur={2} far={4} />
+            </Suspense>
+          </Canvas>
+        </div>
+        <div className="hero-content" style={{ zIndex: 10 }}>
           <div className="eyebrow hero-el scroll-reveal">
             <div className="eyebrow-line"></div>
             <div className="eyebrow-text">// Student · Builder · Data Person</div>

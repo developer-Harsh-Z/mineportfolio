@@ -2,7 +2,17 @@
 
 This document tracks all the changes made to the portfolio project and maps them to specific versions.
 
-## [Version 2] - Current (Latest)
+## [Version 3] - Current (Latest)
+**Date:** April 24, 2026
+**Summary:** Cinematic 3D Hero Model Integration
+
+### Added
+- Installed `three`, `@react-three/fiber`, and `@react-three/drei`.
+- Built `<HeroModel />` component to load `model (1).glb` and apply animations from `Standing Greeting.fbx`.
+- Implemented cursor-tracking logic using `useFrame` to make the character's head/body follow the mouse movement.
+- Integrated an absolute-positioned `<Canvas />` behind the hero typography with lighting and contact shadows.
+
+## [Version 2] - Theme Toggle
 **Date:** April 24, 2026
 **Summary:** Added Light / Dark Mode Toggle
 
