@@ -229,6 +229,7 @@ const MusicPlayer = () => {
               <div className="mini-reel-inner"></div>
             </div>
           </div>
+          {!isExpanded && <span className="toggle-label">The Frequency</span>}
           <div className={`notification-dot ${isPlaying ? 'visible' : ''}`}></div>
         </div>
 

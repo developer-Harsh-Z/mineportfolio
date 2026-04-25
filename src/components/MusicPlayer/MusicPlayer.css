@@ -15,73 +15,77 @@
   display: flex;
   align-items: center;
   background: var(--surface);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: 50px;
-  padding: 10px;
+  padding: 8px;
   gap: 0;
   width: auto;
   min-width: 56px;
-  max-width: 56px;
-  height: 56px;
+  max-width: 140px; /* Wider collapsed state for the label */
+  height: 48px;
   overflow: hidden;
-  transition: max-width 0.5s cubic-bezier(0.76, 0, 0.24, 1),
+  transition: max-width 0.6s cubic-bezier(0.76, 0, 0.24, 1),
               padding 0.4s cubic-bezier(0.76, 0, 0.24, 1),
-              gap 0.4s cubic-bezier(0.76, 0, 0.24, 1);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+              gap 0.4s cubic-bezier(0.76, 0, 0.24, 1),
+              background 0.3s;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
   position: relative;
+  cursor: pointer;
+}
+
+.capsule:hover {
+  border-color: rgba(255, 61, 0, 0.3);
+  background: rgba(23, 19, 16, 0.95);
 }
 
 .capsule.expanded {
-  max-width: 320px;
-  padding: 10px 14px 10px 10px;
+  max-width: 360px;
+  padding: 10px 16px 10px 10px;
   gap: 12px;
+  height: 56px;
+  cursor: default;
 }
 
 /* Cassette Icon / Toggle */
 .cassette-toggle {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
   flex-shrink: 0;
-  cursor: pointer;
   position: relative;
-  transition: border-color 0.3s;
-  border: 1px solid transparent;
-}
-
-.cassette-toggle:hover {
-  border-color: var(--accent);
 }
 
 .mini-reels {
   display: flex;
-  gap: 5px;
+  gap: 4px;
+  background: rgba(0,0,0,0.2);
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .mini-reel {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  border: 1.5px solid var(--muted);
+  border: 2px solid var(--muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.3s;
+  transition: all 0.3s;
 }
 
 .mini-reel-inner {
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--muted);
-  transition: background 0.3s;
+  transition: all 0.3s;
 }
 
 .reel-spinning {
-  animation: reelSpin 1.5s linear infinite;
+  animation: reelSpin 2s linear infinite;
 }
 
 @keyframes reelSpin {
@@ -90,23 +94,36 @@
 
 .playing-reels .mini-reel {
   border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(255, 61, 0, 0.3);
 }
 
 .playing-reels .mini-reel-inner {
   background: var(--accent);
 }
 
+.toggle-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
 .notification-dot {
   position: absolute;
-  top: -2px;
-  right: -2px;
+  top: -4px;
+  left: -4px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--accent);
-  border: 2px solid var(--bg);
+  border: 2px solid var(--surface);
   opacity: 0;
   transition: opacity 0.3s;
+  z-index: 2;
 }
 
 .notification-dot.visible {
@@ -122,7 +139,7 @@
   transition: opacity 0.3s 0.2s;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 140px;
+  max-width: 160px;
 }
 
 .expanded .track-info {
@@ -149,20 +166,21 @@
 .track-geo {
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
-  color: var(--text-muted);
+  color: var(--accent);
   margin-top: 2px;
   display: flex;
   align-items: center;
   gap: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Waveform Bars */
 .waveform {
   display: flex;
   align-items: center;
-  gap: 2px;
-  height: 20px;
-  margin: 0 4px;
+  gap: 3px;
+  height: 24px;
 }
 
 .wave-bar {
@@ -185,11 +203,12 @@
 .paused .wave-bar {
   height: 4px !important;
   animation-play-state: paused;
+  opacity: 0.5;
 }
 
 @keyframes wave {
-  0%, 100% { transform: scaleY(0.4); }
-  50% { transform: scaleY(1.0); }
+  0%, 100% { transform: scaleY(0.4); opacity: 0.6; }
+  50% { transform: scaleY(1.0); opacity: 1; }
 }
 
 /* Controls */
@@ -206,11 +225,11 @@
 }
 
 .control-btn {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 1px solid rgba(240, 232, 216, 0.15);
-  background: transparent;
+  border: 1px solid rgba(240, 232, 216, 0.1);
+  background: rgba(255,255,255,0.02);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,38 +240,40 @@
 
 .control-btn:hover {
   border-color: var(--accent);
+  background: rgba(255, 61, 0, 0.1);
   color: var(--text-primary);
+  transform: scale(1.05);
 }
 
 .play-icon {
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 5px 0 5px 8px;
-  border-color: transparent transparent transparent var(--text-primary);
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent currentColor;
   margin-left: 2px;
 }
 
 .pause-icon {
   display: flex;
-  gap: 3px;
+  gap: 4px;
 }
 
 .pause-bar {
-  width: 2px;
-  height: 10px;
-  background: var(--text-primary);
+  width: 3px;
+  height: 12px;
+  background: currentColor;
+  border-radius: 1px;
 }
 
 .shuffle-btn svg {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   stroke: currentColor;
-  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .shuffle-btn.spinning svg {
-  animation: spinShuffle 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  animation: spinShuffle 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @keyframes spinShuffle {
@@ -261,15 +282,16 @@
 
 .close-btn {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 0 4px;
-  transition: color 0.3s;
+  padding: 0 8px;
+  transition: all 0.3s;
 }
 
 .close-btn:hover {
-  color: var(--text-primary);
+  color: var(--accent);
+  transform: scale(1.2);
 }
 
 /* Progress Bar */
@@ -278,10 +300,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: rgba(240, 232, 216, 0.06);
-  border-radius: 0 0 50px 50px;
-  overflow: hidden;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .progress-fill {
@@ -289,6 +309,7 @@
   background: var(--accent);
   width: 0%;
   transition: width 0.5s linear;
+  box-shadow: 0 0 10px var(--accent);
 }
 
 /* Loading state */
@@ -321,17 +342,25 @@
     right: 16px;
   }
   
+  .capsule {
+    max-width: 120px;
+  }
+  
   .capsule.expanded {
-    max-width: 260px;
+    max-width: 280px;
   }
   
   .track-info {
-    max-width: 90px;
+    max-width: 100px;
   }
-}
-
-@media (max-width: 380px) {
-  .capsule.expanded {
-    max-width: 220px;
+  
+  .toggle-label {
+    display: none; /* Hide label on very small screens to save space */
+  }
+  
+  .capsule {
+    min-width: 48px;
+    max-width: 48px;
+    height: 48px;
   }
 }
