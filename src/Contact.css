@@ -1,8 +1,11 @@
 .contact-section {
   border-top: 1px solid var(--border);
   padding: 120px 5vw;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* ---- Mode Picker ---- */
 .mode-picker {
   display: flex;
   flex-direction: column;
@@ -12,7 +15,7 @@
 
 .contact-heading {
   font-family: 'Harsh', sans-serif;
-  font-size: clamp(36px, 6vw, 64px);
+  font-size: clamp(32px, 6vw, 64px);
   color: var(--text-primary);
   margin-top: 40px;
   margin-bottom: 48px;
@@ -23,6 +26,7 @@
   gap: 24px;
   justify-content: center;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .mode-card {
@@ -33,10 +37,12 @@
   cursor: pointer;
   transition: border-color 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s ease;
   width: 320px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .mode-card:hover {
@@ -82,7 +88,7 @@
   border: 2px solid var(--text-muted);
   border-radius: 50%;
   position: relative;
-  animation: spin 3s linear infinite;
+  animation: spinReel 3s linear infinite;
 }
 .spinning-reels .reel::after {
   content: '';
@@ -101,7 +107,7 @@
   transform: translate(-50%, -50%);
 }
 
-@keyframes spin {
+@keyframes spinReel {
   100% { transform: rotate(360deg); }
 }
 
@@ -130,12 +136,12 @@
   letter-spacing: 0.1em;
 }
 
-/* Selected Mode Wrapper */
+/* ---- Selected Mode Wrapper ---- */
 .selected-mode-wrapper {
-  animation: fadeIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  animation: modeIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-@keyframes fadeIn {
+@keyframes modeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
@@ -149,40 +155,45 @@
   cursor: pointer;
   margin-bottom: 40px;
   transition: color 0.3s;
+  padding: 0;
 }
 .back-btn:hover {
   color: var(--text-primary);
 }
 
-/* -------------------------------------
-   MODE A: DATA FORM
--------------------------------------- */
+/* ---- MODE A: DATA FORM ---- */
 .mode-a-container {
   display: flex;
   gap: 48px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-left {
   flex: 6;
+  min-width: 0;
 }
 
 .live-viz-right {
   flex: 4;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 .field-group {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   position: relative;
+  width: 100%;
 }
 
 .contact-input {
   width: 100%;
+  box-sizing: border-box;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(240,232,216,0.15);
+  border-bottom: 1px solid var(--border);
   padding: 12px 0;
   font-family: 'JetBrains Mono', monospace;
   font-size: 15px;
@@ -190,6 +201,9 @@
   outline: none;
   transition: border-color 0.3s;
   resize: none;
+  display: block;
+  -webkit-appearance: none;
+  appearance: none;
 }
 .contact-input:focus {
   border-bottom-color: var(--accent);
@@ -210,7 +224,7 @@
 
 .intent-selector {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
   margin-top: 8px;
 }
@@ -229,25 +243,26 @@
 .intent-pill.selected {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--bg);
+  color: #ffffff;
 }
 
 .run-send-btn {
   width: 100%;
   margin-top: 32px;
   background: transparent;
-  border: 1px solid rgba(240,232,216,0.15);
+  border: 1px solid var(--border);
   color: var(--text-primary);
   font-family: 'JetBrains Mono', monospace;
   font-size: 14px;
   padding: 16px 0;
   cursor: pointer;
   transition: all 0.3s;
+  box-sizing: border-box;
 }
 .run-send-btn:hover {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--bg);
+  color: #ffffff;
 }
 
 /* Viz Panels */
@@ -260,7 +275,7 @@
 
 .viz-card {
   background: var(--surface);
-  border: 1px solid rgba(240,232,216,0.08);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px 20px;
 }
@@ -275,7 +290,7 @@
 .sentiment-bar-bg {
   width: 100%;
   height: 6px;
-  background: rgba(240,232,216,0.1);
+  background: var(--border);
   border-radius: 3px;
   overflow: hidden;
   margin-bottom: 8px;
@@ -295,7 +310,7 @@
 
 .breakdown-bars {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   height: 80px;
   align-items: flex-end;
 }
@@ -304,7 +319,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex: 1;
 }
 
@@ -320,12 +335,14 @@
   background: var(--accent);
   border-radius: 2px 2px 0 0;
   transition: height 0.4s;
+  min-height: 2px;
 }
 
 .b-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   color: var(--text-muted);
+  text-align: center;
 }
 
 .keywords-wrap {
@@ -338,7 +355,7 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   padding: 3px 10px;
-  border: 1px solid rgba(240,232,216,0.15);
+  border: 1px solid var(--border);
   color: var(--text-muted);
   border-radius: 20px;
   animation: fadeTag 0.3s forwards;
@@ -355,9 +372,14 @@
 }
 
 /* Terminal */
+.submitting-state {
+  padding: 12px 0;
+}
 .terminal-output {
-  background: transparent;
-  padding: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
 }
 .terminal-line {
   font-family: 'JetBrains Mono', monospace;
@@ -375,14 +397,12 @@
   font-style: italic;
   color: var(--accent);
   margin-top: 24px;
-  animation: fadeIn 0.8s forwards;
+  animation: modeIn 0.8s forwards;
 }
 
-/* -------------------------------------
-   MODE B: VOICEMAIL
--------------------------------------- */
+/* ---- MODE B: VOICEMAIL ---- */
 .mode-b-container {
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
   text-align: center;
 }
@@ -391,10 +411,11 @@
   width: 280px;
   height: 180px;
   background: var(--surface);
-  border: 1px solid rgba(240,232,216,0.15);
+  border: 1px solid var(--border);
   border-radius: 8px;
   margin: 0 auto 32px;
   position: relative;
+  overflow: hidden;
 }
 
 .cassette-window {
@@ -406,26 +427,27 @@
   left: 50%;
   transform: translateX(-50%);
   border-radius: 4px;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
 }
 
 .cassette-reel {
   width: 60px;
   height: 60px;
-  border: 2px solid rgba(240,232,216,0.2);
+  border: 2px solid var(--border);
   border-radius: 50%;
   position: absolute;
   top: 25px;
+  z-index: 2;
 }
-.cassette-reel.left { left: 55px; }
-.cassette-reel.right { right: 55px; }
+.cassette-reel.left { left: 35px; }
+.cassette-reel.right { right: 35px; }
 
 .cassette-reel::after {
   content: '';
   position: absolute;
   top: 50%; left: 50%;
   width: 100%; height: 2px;
-  background: rgba(240,232,216,0.2);
+  background: var(--border);
   transform: translate(-50%, -50%);
 }
 .cassette-reel::before {
@@ -433,38 +455,42 @@
   position: absolute;
   top: 50%; left: 50%;
   width: 2px; height: 100%;
-  background: rgba(240,232,216,0.2);
+  background: var(--border);
   transform: translate(-50%, -50%);
 }
 
-.cassette-reel.spinning.slow { animation: spin 8s linear infinite; }
-.cassette-reel.spinning.fast { animation: spin 1.5s linear infinite; }
+.cassette-reel.spinning.slow { animation: spinReel 8s linear infinite; }
+.cassette-reel.spinning.fast { animation: spinReel 1.5s linear infinite; }
 .cassette-reel.paused { animation-play-state: paused; }
 
 .cassette-label {
   position: absolute;
-  bottom: 20px;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(240,232,216,0.05);
-  padding: 8px 32px;
+  background: var(--border);
+  padding: 6px 24px;
   font-family: 'Harsh', sans-serif;
   font-style: italic;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-primary);
   border-radius: 2px;
+  white-space: nowrap;
 }
 
 .waveform-canvas {
+  display: block;
   width: 100%;
   height: 60px;
   margin-bottom: 24px;
+  border-radius: 4px;
 }
 
 .recording-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0;
 }
 
 .record-btn {
@@ -491,7 +517,7 @@
 .inner-dot {
   width: 16px;
   height: 16px;
-  background: white;
+  background: #ffffff;
   border-radius: 50%;
   transition: all 0.3s;
 }
@@ -550,6 +576,7 @@
   font-size: 11px;
   color: var(--text-muted);
   cursor: pointer;
+  padding: 0;
 }
 .start-over-btn:hover { color: var(--accent); }
 
@@ -563,10 +590,11 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid rgba(240,232,216,0.2);
+  border: 1px solid var(--border);
   background: transparent;
   position: relative;
   cursor: pointer;
+  flex-shrink: 0;
 }
 .play-btn::after {
   content: '';
@@ -589,7 +617,7 @@
 .review-fields {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
   margin-bottom: 32px;
 }
 
@@ -600,16 +628,17 @@
   font-style: italic;
   font-size: 20px;
   color: var(--text-primary);
-  border: 1px solid rgba(240,232,216,0.15);
+  border: 1px solid var(--border);
   padding: 16px 48px;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s;
+  box-sizing: border-box;
 }
 .seal-send-btn:hover {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--bg);
+  color: #ffffff;
 }
 
 /* Wax Seal */
@@ -622,9 +651,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(13,11,9,0.8);
-  border-radius: 8px;
+  background: var(--bg);
+  border-radius: 50%;
   z-index: 10;
+  overflow: visible;
 }
 
 .seal-circle {
@@ -660,21 +690,64 @@
   font-size: 24px;
   color: var(--accent);
   margin-top: 40px;
-  animation: fadeIn 1s;
+  animation: modeIn 1s;
 }
 
+/* Social Links */
+.contact-socials {
+  display: flex;
+  gap: 32px;
+  margin-top: 80px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.contact-socials a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.contact-socials a:hover {
+  color: var(--text-primary);
+}
+
+/* ---- MOBILE ---- */
 @media (max-width: 768px) {
+  .contact-section {
+    padding: 80px 6vw;
+  }
   .mode-a-container {
     flex-direction: column;
+    gap: 32px;
   }
   .form-left, .live-viz-right {
     flex: 1;
+    width: 100%;
+  }
+  .mode-cards {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .mode-card {
+    width: 100%;
   }
   .cassette {
-    transform: scale(0.85);
-    margin: -10px auto 16px;
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  .contact-section {
-    padding: 80px 6vw;
+  .breakdown-bars {
+    gap: 8px;
+  }
+  .run-send-btn, .seal-send-btn {
+    width: 100%;
+    padding: 16px 0;
+  }
+  .contact-socials {
+    gap: 20px;
   }
 }
