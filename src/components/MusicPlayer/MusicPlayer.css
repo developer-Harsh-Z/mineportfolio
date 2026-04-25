@@ -25,10 +25,11 @@
   max-width: 56px;
   height: 48px;
   overflow: hidden;
-  transition: max-width 0.6s cubic-bezier(0.76, 0, 0.24, 1),
+  transition: max-width 0.5s cubic-bezier(0.76, 0, 0.24, 1),
               padding 0.4s cubic-bezier(0.76, 0, 0.24, 1),
               gap 0.4s cubic-bezier(0.76, 0, 0.24, 1),
               background 0.3s;
+  will-change: max-width, transform;
   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
   position: relative;
   cursor: pointer;
@@ -359,7 +360,15 @@
   }
   
   .capsule {
-    max-width: 120px;
+    backdrop-filter: none; /* Disable expensive filter on mobile */
+    background: rgba(23, 19, 16, 0.98);
+    max-width: 48px;
+    height: 48px;
+  }
+  
+  .capsule.expanded {
+    max-width: 260px;
+    height: 52px;
   }
   
   .capsule.expanded {

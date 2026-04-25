@@ -214,10 +214,28 @@ const MusicPlayer = () => {
     setIsExpanded(false);
   };
 
+  // 4. Click Outside Logic
+  const containerRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setIsExpanded(false);
+      }
+    };
+    if (isExpanded) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isExpanded]);
+
   const currentTrack = videoList[currentIndex];
 
   return (
-    <div className="player-wrapper">
+    <div className="player-wrapper" ref={containerRef}>
       <div 
         className={`capsule ${isExpanded ? 'expanded' : ''} ${!isPlaying ? 'paused' : ''}`}
         onClick={handleToggleExpand}
