@@ -530,9 +530,26 @@ const ModeB = () => {
 // ----------------------------------------------------
 export default function Contact() {
   const [selectedMode, setSelectedMode] = useState(null);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    const elements = sectionRef.current?.querySelectorAll('.scroll-reveal');
+    elements?.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [selectedMode]); // re-run when mode changes so new elements get observed
 
   return (
-    <section id="contact" className="contact-section">
+    <section id="contact" className="contact-section" ref={sectionRef}>
       <div className="chapter-label scroll-reveal">
         <span>Chapter 05 — Let's Talk</span>
       </div>
@@ -564,7 +581,7 @@ export default function Contact() {
           </div>
         </div>
       ) : (
-        <div className="selected-mode-wrapper scroll-reveal">
+        <div className="selected-mode-wrapper">
            <button className="back-btn" onClick={() => setSelectedMode(null)}>← Back to modes</button>
            {selectedMode === 'dataform' ? <ModeA /> : <ModeB />}
         </div>
@@ -578,3 +595,4 @@ export default function Contact() {
     </section>
   );
 }
+
