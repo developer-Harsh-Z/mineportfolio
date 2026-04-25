@@ -400,6 +400,33 @@
   animation: modeIn 0.8s forwards;
 }
 
+.sending-indicator {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin-loader 0.8s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin-loader {
+  to { transform: rotate(360deg); }
+}
+
+.send-error .terminal-line {
+  color: var(--accent);
+}
+
 /* ---- MODE B: VOICEMAIL ---- */
 .mode-b-container {
   max-width: 520px;

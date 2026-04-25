@@ -1,11 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import emailjs from '@emailjs/browser';
 import './Contact.css';
 
+// ── EmailJS config ── fill these in after creating your free account at emailjs.com
+const EMAILJS_SERVICE_ID  = 'service_XXXXXXX';   // e.g. 'service_abc123'
+const EMAILJS_TEMPLATE_ID = 'template_XXXXXXX';  // e.g. 'template_xyz789'
+const EMAILJS_PUBLIC_KEY  = 'XXXXXXXXXXXXXXXXXXXX'; // Public Key from EmailJS dashboard
+
 // ----------------------------------------------------
-// TERMINAL OUTPUT
+// TERMINAL OUTPUT — runs exactly once, no infinite loop
 // ----------------------------------------------------
 const TerminalOutput = ({ onComplete }) => {
-  const [lines, setLines] = useState([]);
+  const [visibleLines, setVisibleLines] = useState(0);
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
+
   const fullLines = [
     "> initialising message payload...",
     "> validating fields............. ✓",
@@ -16,29 +25,27 @@ const TerminalOutput = ({ onComplete }) => {
   ];
 
   useEffect(() => {
-    let currentLine = 0;
-    const interval = setInterval(() => {
-      setLines(prev => [...prev, fullLines[currentLine]]);
-      currentLine++;
-      if (currentLine === fullLines.length) {
-        clearInterval(interval);
-        setTimeout(() => onComplete && onComplete(), 500);
+    let idx = 0;
+    const tick = () => {
+      idx++;
+      setVisibleLines(idx);
+      if (idx < fullLines.length) {
+        timer = setTimeout(tick, 220);
+      } else {
+        setTimeout(() => onCompleteRef.current?.(), 500);
       }
-    }, 200);
-    return () => clearInterval(interval);
-  }, [onComplete]);
+    };
+    let timer = setTimeout(tick, 220);
+    return () => clearTimeout(timer);
+  }, []); // ← empty dep array = runs exactly once
 
   return (
     <div className="terminal-output">
-      {lines.map((line, i) => (
+      {fullLines.slice(0, visibleLines).map((line, i) => (
         <div key={i} className="terminal-line">
           {line.includes('✓') ? (
-            <>
-              {line.split('✓')[0]}<span className="success-tick">✓</span>{line.split('✓')[1]}
-            </>
-          ) : (
-            line
-          )}
+            <>{line.split('✓')[0]}<span className="success-tick">✓</span>{line.split('✓')[1]}</>
+          ) : line}
         </div>
       ))}
     </div>
@@ -61,8 +68,10 @@ const ModeA = () => {
   const [avgWordLen, setAvgWordLen] = useState(0);
   const [keywords, setKeywords] = useState([]);
 
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);   // sending in progress
+  const [sendState, setSendState]   = useState('idle');  // 'idle'|'sending'|'done'|'error'
   const [terminalDone, setTerminalDone] = useState(false);
+  const handleTerminalComplete = useCallback(() => setTerminalDone(true), []);
 
   const intents = ["Job Offer", "Collaboration", "Freelance", "Just Saying Hi"];
 
@@ -123,11 +132,34 @@ const ModeA = () => {
     setEmailValid(regex.test(email));
   };
 
-  const handleSend = () => {
-    if (name && emailValid && message) {
-      setSubmitting(true);
-    } else {
+  const handleSend = async () => {
+    if (!name || !emailValid || !message) {
       if (!emailValid) validateEmail();
+      return;
+    }
+
+    setSubmitting(true);
+    setSendState('sending');
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name:  name,
+          from_email: email,
+          intent:     intent,
+          message:    message,
+          sentiment:  sentiment.toFixed(2),
+          to_email:   'harshvardhansingh.ds@gmail.com',
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      setSendState('done');
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setSendState('error');
+      setSubmitting(false);
     }
   };
 
@@ -136,9 +168,27 @@ const ModeA = () => {
       <div className="form-left">
         {submitting ? (
           <div className="submitting-state">
-            <TerminalOutput onComplete={() => setTerminalDone(true)} />
-            {terminalDone && (
-              <div className="terminal-success-msg">Message received. Harsh will get back to you.</div>
+            {sendState === 'sending' && (
+              <div className="sending-indicator">
+                <div className="spinner"></div>
+                <span>Sending your message...</span>
+              </div>
+            )}
+            {sendState === 'done' && (
+              <>
+                <TerminalOutput onComplete={handleTerminalComplete} />
+                {terminalDone && (
+                  <div className="terminal-success-msg">Message received. Harsh will get back to you.</div>
+                )}
+              </>
+            )}
+            {sendState === 'error' && (
+              <div className="send-error">
+                <div className="terminal-line">✗ Failed to send. Check your connection and try again.</div>
+                <button className="run-send-btn" style={{marginTop:'16px'}} onClick={() => { setSubmitting(false); setSendState('idle'); }}>
+                  ↩ try again
+                </button>
+              </div>
             )}
           </div>
         ) : (
