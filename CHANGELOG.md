@@ -2,7 +2,18 @@
 
 This document tracks all the changes made to the portfolio project and maps them to specific versions.
 
-## [Version 3] - Current (Latest)
+## [Version 4] - Current (Latest)
+**Date:** April 24, 2026
+**Summary:** Interactive 2D Image Hero
+
+### Added/Changed
+- Replaced the React Three Fiber 3D model with `harsh_img.png`.
+- Added premium 3D tilt hover animations using React `onMouseMove` state calculation.
+- Implemented continuous floating CSS animation (`@keyframes`) for dynamic resting state.
+- Enhanced the background glow behind the image for a more integrated, cinematic feel.
+- Removed unused `three` dependencies and the `<Canvas>` wrapper.
+
+## [Version 3] - 3D Model Integration
 **Date:** April 24, 2026
 **Summary:** Cinematic 3D Hero Model Integration
 

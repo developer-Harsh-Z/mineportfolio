@@ -1,7 +1,4 @@
-import { useEffect, useRef, useState, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Environment, ContactShadows } from '@react-three/drei';
-import HeroModel from './HeroModel';
+import { useEffect, useRef, useState } from 'react';
 import './index.css';
 
 function App() {
@@ -12,6 +9,10 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState('dark');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [imageTransform, setImageTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)');
+  
+  const imageRef = useRef(null);
   
   const dotRef = useRef(null);
   const ringRef = useRef(null);
@@ -104,9 +105,30 @@ function App() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 60);
     };
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
+
+  const handleImageMouseMove = (e) => {
+    if (!imageRef.current) return;
+    const { left, top, width, height } = imageRef.current.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;
+    const y = (e.clientY - top) / height - 0.5;
+    const rotateY = x * 15;
+    const rotateX = -y * 15;
+    setImageTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`);
+  };
+
+  const handleImageMouseLeave = () => {
+    setImageTransform('perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)');
+  };
 
   useEffect(() => {
     // Scroll Reveal Observer
@@ -195,16 +217,17 @@ function App() {
       </div>
 
       <section id="hero" className="hero">
-        <div className="hero-model-container" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: 'none' }}>
-          <Canvas eventSource={document.documentElement} camera={{ position: [0, 1.5, 6], fov: 45 }}>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[5, 10, 5]} angle={0.25} penumbra={1} />
-            <Suspense fallback={null}>
-              <HeroModel />
-              <Environment preset="city" />
-              <ContactShadows position={[0, -2, 0]} opacity={0.4} scale={10} blur={2} far={4} />
-            </Suspense>
-          </Canvas>
+        <div className="hero-image-container">
+          <div 
+            className="hero-image-wrapper"
+            ref={imageRef}
+            onMouseMove={handleImageMouseMove}
+            onMouseLeave={handleImageMouseLeave}
+            style={{ transform: imageTransform }}
+          >
+            <div className="hero-image-glow"></div>
+            <img src="/images/harsh_img.png" alt="Harsh" className="hero-image" />
+          </div>
         </div>
         <div className="hero-content" style={{ zIndex: 10 }}>
           <div className="eyebrow hero-el scroll-reveal">
