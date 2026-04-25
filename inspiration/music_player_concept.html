@@ -1,0 +1,293 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0b09;--surface:#171310;--accent:#ff3d00;--text:#f0e8d8;--muted:#7a6a5a;--border:rgba(240,232,216,0.1)}
+body{background:var(--bg);font-family:var(--font-mono);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;gap:40px;padding:32px}
+
+/* PREVIEW LABEL */
+.label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+
+/* ==================
+   CAPSULE PLAYER
+================== */
+.capsule{
+  position:relative;
+  display:flex;align-items:center;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:50px;
+  padding:10px 10px 10px 14px;
+  gap:12px;
+  transition:all .4s cubic-bezier(.23,1,.32,1);
+  cursor:pointer;
+  overflow:hidden;
+  min-width:56px;
+}
+.capsule.collapsed{padding:10px;min-width:auto;gap:0}
+
+/* cassette icon button */
+.play-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--accent);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:transform .2s;
+  position:relative;z-index:2;
+}
+.play-btn:hover{transform:scale(1.08)}
+.play-btn svg{width:14px;height:14px;fill:#0d0b09;transition:opacity .2s}
+
+/* cassette visual inside btn */
+.cassette-icon{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--surface);border:1.5px solid rgba(240,232,216,0.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;cursor:pointer;transition:border-color .3s;
+  position:relative;overflow:hidden;
+}
+.cassette-icon:hover{border-color:var(--accent)}
+.reel-wrap{display:flex;gap:5px;align-items:center}
+.mini-reel{
+  width:9px;height:9px;border-radius:50%;
+  border:1.5px solid var(--muted);
+  display:flex;align-items:center;justify-content:center;
+}
+.mini-reel-inner{width:3px;height:3px;border-radius:50%;background:var(--muted)}
+.mini-reel.spin{animation:rspin 1s linear infinite}
+.mini-reel.spin .mini-reel-inner{background:var(--accent)}
+@keyframes rspin{to{transform:rotate(360deg)}}
+
+/* info */
+.player-info{
+  display:flex;flex-direction:column;gap:3px;
+  overflow:hidden;
+  max-width:0;opacity:0;
+  transition:max-width .5s cubic-bezier(.23,1,.32,1), opacity .3s;
+  white-space:nowrap;
+}
+.capsule:not(.collapsed) .player-info{max-width:200px;opacity:1}
+.track-name{font-size:12px;color:var(--text);letter-spacing:.02em}
+.track-artist{font-size:10px;color:var(--muted);letter-spacing:.05em}
+
+/* waveform bars */
+.wave-bars{
+  display:flex;align-items:center;gap:2px;
+  max-width:0;opacity:0;
+  transition:max-width .5s cubic-bezier(.23,1,.32,1), opacity .3s;
+}
+.capsule:not(.collapsed) .wave-bars{max-width:80px;opacity:1}
+.bar{width:3px;border-radius:2px;background:var(--accent);animation:wavebar 1s ease-in-out infinite;opacity:.7}
+.bar:nth-child(1){height:8px;animation-delay:0s}
+.bar:nth-child(2){height:14px;animation-delay:.15s}
+.bar:nth-child(3){height:20px;animation-delay:.3s}
+.bar:nth-child(4){height:12px;animation-delay:.45s}
+.bar:nth-child(5){height:18px;animation-delay:.6s}
+.bar.paused{animation:none;height:4px!important}
+@keyframes wavebar{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+
+/* refresh */
+.refresh-btn{
+  width:30px;height:30px;border-radius:50%;
+  background:transparent;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .3s;flex-shrink:0;
+  max-width:0;opacity:0;overflow:hidden;
+  transition:max-width .5s, opacity .3s, border-color .3s, transform .3s;
+}
+.capsule:not(.collapsed) .refresh-btn{max-width:30px;opacity:1}
+.refresh-btn:hover{border-color:var(--accent);transform:rotate(180deg)}
+.refresh-btn svg{width:12px;height:12px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round}
+
+/* progress line under capsule */
+.progress-wrap{
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:rgba(240,232,216,0.06);
+  border-radius:0 0 50px 50px;overflow:hidden;
+}
+.progress-fill{height:100%;background:var(--accent);width:0%;transition:width .5s linear;border-radius:50px}
+
+/* DEMO AREA */
+.demo-page{
+  width:100%;max-width:480px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+  position:relative;
+  display:flex;flex-direction:column;gap:16px;
+}
+.page-title{font-size:24px;color:var(--text);font-weight:300;letter-spacing:-.02em}
+.page-title em{color:var(--accent);font-style:italic}
+.page-body{font-size:12px;color:var(--muted);line-height:1.8}
+.corner-player{position:absolute;bottom:16px;right:16px}
+
+/* STATUS NOTE */
+.note{
+  font-size:11px;color:var(--muted);letter-spacing:.1em;
+  text-align:center;line-height:1.6;
+}
+.note em{color:var(--text);font-style:normal}
+
+/* TRACKS DISPLAY */
+.tracks-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.track-pill{
+  font-size:10px;padding:4px 12px;border:1px solid var(--border);
+  border-radius:20px;color:var(--muted);letter-spacing:.08em;
+  transition:all .3s;cursor:default;
+}
+.track-pill.active{border-color:var(--accent);color:var(--accent)}
+</style>
+
+<div class="label">// music player — site corner placement demo</div>
+
+<!-- DEMO PAGE MOCK -->
+<div class="demo-page">
+  <div class="page-title">Not just a developer.<br/>A <em>thinker</em> who builds.</div>
+  <div class="page-body">// Data Science student. AI/ML builder.<br/>Analytics thinker. The generalist who ships.</div>
+
+  <!-- CORNER PLAYER -->
+  <div class="corner-player">
+    <div class="capsule collapsed" id="capsule">
+      <!-- Cassette icon toggle -->
+      <div class="cassette-icon" id="cassette-toggle" onclick="toggleCapsule()" title="Click to expand">
+        <div class="reel-wrap">
+          <div class="mini-reel" id="reel-l"><div class="mini-reel-inner"></div></div>
+          <div class="mini-reel" id="reel-r"><div class="mini-reel-inner"></div></div>
+        </div>
+      </div>
+
+      <!-- Track info -->
+      <div class="player-info">
+        <div class="track-name" id="track-name">lo-fi rainstorm</div>
+        <div class="track-artist" id="track-artist">ambient · 3:42</div>
+      </div>
+
+      <!-- Waveform bars -->
+      <div class="wave-bars" id="wave-bars">
+        <div class="bar paused" id="b1"></div>
+        <div class="bar paused" id="b2"></div>
+        <div class="bar paused" id="b3"></div>
+        <div class="bar paused" id="b4"></div>
+        <div class="bar paused" id="b5"></div>
+      </div>
+
+      <!-- Play button -->
+      <button class="play-btn" id="play-btn" onclick="togglePlay(event)" style="display:none">
+        <svg id="play-icon" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+      </button>
+
+      <!-- Refresh -->
+      <button class="refresh-btn" id="refresh-btn" onclick="nextTrack(event)">
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      </button>
+
+      <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TRACK PICKER -->
+<div class="note">
+  <em>Click the cassette icon</em> to expand · <em>Click play</em> to play/pause · <em>↺</em> to shuffle
+</div>
+
+<div class="tracks-row" id="tracks-row"></div>
+
+<script>
+const tracks = [
+  { name: 'lo-fi rainstorm',    artist: 'ambient · 3:42' },
+  { name: 'midnight terminal',  artist: 'lo-fi · 2:58'   },
+  { name: 'neural drift',       artist: 'electronic · 4:11' },
+  { name: 'data waltz',         artist: 'jazz-hop · 3:28' },
+  { name: 'obsidian sky',       artist: 'cinematic · 5:03' },
+];
+
+let currentTrack = 0;
+let isPlaying = false;
+let isExpanded = false;
+let progressInterval = null;
+let progress = 0;
+
+// Build track pills
+const row = document.getElementById('tracks-row');
+tracks.forEach((t,i) => {
+  const p = document.createElement('div');
+  p.className = 'track-pill' + (i===0?' active':'');
+  p.id = 'pill-'+i;
+  p.textContent = t.name;
+  row.appendChild(p);
+});
+
+function toggleCapsule() {
+  const cap = document.getElementById('capsule');
+  const playBtn = document.getElementById('play-btn');
+  isExpanded = !isExpanded;
+  if(isExpanded) {
+    cap.classList.remove('collapsed');
+    playBtn.style.display = 'flex';
+  } else {
+    cap.classList.add('collapsed');
+    playBtn.style.display = 'none';
+  }
+}
+
+function togglePlay(e) {
+  e.stopPropagation();
+  isPlaying = !isPlaying;
+  const icon = document.getElementById('play-icon');
+  const bars = document.querySelectorAll('.bar');
+  const reelL = document.getElementById('reel-l');
+  const reelR = document.getElementById('reel-r');
+
+  if(isPlaying) {
+    icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+    bars.forEach(b => b.classList.remove('paused'));
+    reelL.classList.add('spin');
+    reelR.classList.add('spin');
+    startProgress();
+  } else {
+    icon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+    bars.forEach(b => b.classList.add('paused'));
+    reelL.classList.remove('spin');
+    reelR.classList.remove('spin');
+    clearInterval(progressInterval);
+  }
+}
+
+function startProgress() {
+  clearInterval(progressInterval);
+  progressInterval = setInterval(() => {
+    progress += 0.3;
+    if(progress >= 100) { progress = 0; nextTrack(); }
+    document.getElementById('progress-fill').style.width = progress + '%';
+  }, 100);
+}
+
+function nextTrack(e) {
+  if(e) e.stopPropagation();
+  // animate refresh spin
+  const btn = document.getElementById('refresh-btn');
+  btn.style.transform = 'rotate(360deg)';
+  setTimeout(() => btn.style.transform = '', 400);
+
+  // pick random different track
+  let next;
+  do { next = Math.floor(Math.random() * tracks.length); } while(next === currentTrack && tracks.length > 1);
+
+  document.getElementById('pill-'+currentTrack).classList.remove('active');
+  currentTrack = next;
+  document.getElementById('pill-'+currentTrack).classList.add('active');
+
+  const t = tracks[currentTrack];
+  document.getElementById('track-name').textContent = t.name;
+  document.getElementById('track-artist').textContent = t.artist;
+
+  // flash track name
+  const tn = document.getElementById('track-name');
+  tn.style.opacity = '0';
+  setTimeout(() => { tn.style.transition='opacity .3s'; tn.style.opacity='1'; }, 50);
+
+  progress = 0;
+  document.getElementById('progress-fill').style.width = '0%';
+  if(isPlaying) startProgress();
+}
+</script>
