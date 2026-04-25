@@ -1,16 +1,36 @@
-# React + Vite
+# Harsh's Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-end, cinematic, and responsive personal portfolio built with React and Vite. 
 
-Currently, two official plugins are available:
+## Tech Stack
+- **Framework:** React + Vite
+- **Styling:** Vanilla CSS (Custom Design System, CSS Variables)
+- **Deployment Ready:** Fast build times, optimized assets.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
+- **Cinematic Loader:** A smooth split-screen entrance animation.
+- **Theme Toggle:** Dynamic Light/Dark mode with `localStorage` persistence.
+- **Interactive Hero Image:** 3D tilt hover effects and floating animations.
+- **Scroll Reveal Animations:** Intersection observers trigger elegant entry animations as you scroll down.
+- **Custom Cursor:** Dot and laggy-ring cursor with hover scale effects.
+- **Responsive:** Full tablet and mobile support with hamburger menu navigation.
 
-## React Compiler
+## Setup Instructions
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Expanding the ESLint configuration
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+3. Build for production:
+   ```bash
+   npm run build
+   ```
+
+## Development History
+Check the `CHANGELOG.md` file for details on version updates and major feature integrations.
