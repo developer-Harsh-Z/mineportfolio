@@ -1,0 +1,337 @@
+/* Music Player — "The Frequency" Styles */
+.player-wrapper {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* Capsule */
+.capsule {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 10px;
+  gap: 0;
+  width: auto;
+  min-width: 56px;
+  max-width: 56px;
+  height: 56px;
+  overflow: hidden;
+  transition: max-width 0.5s cubic-bezier(0.76, 0, 0.24, 1),
+              padding 0.4s cubic-bezier(0.76, 0, 0.24, 1),
+              gap 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+.capsule.expanded {
+  max-width: 320px;
+  padding: 10px 14px 10px 10px;
+  gap: 12px;
+}
+
+/* Cassette Icon / Toggle */
+.cassette-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s;
+  border: 1px solid transparent;
+}
+
+.cassette-toggle:hover {
+  border-color: var(--accent);
+}
+
+.mini-reels {
+  display: flex;
+  gap: 5px;
+}
+
+.mini-reel {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s;
+}
+
+.mini-reel-inner {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: background 0.3s;
+}
+
+.reel-spinning {
+  animation: reelSpin 1.5s linear infinite;
+}
+
+@keyframes reelSpin {
+  to { transform: rotate(360deg); }
+}
+
+.playing-reels .mini-reel {
+  border-color: var(--accent);
+}
+
+.playing-reels .mini-reel-inner {
+  background: var(--accent);
+}
+
+.notification-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.notification-dot.visible {
+  opacity: 1;
+}
+
+/* Track Info */
+.track-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.3s 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 140px;
+}
+
+.expanded .track-info {
+  opacity: 1;
+}
+
+.track-title {
+  font-family: 'Harsh', sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-primary);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.track-artist {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.track-geo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Waveform Bars */
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+  margin: 0 4px;
+}
+
+.wave-bar {
+  width: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: height 0.3s;
+}
+
+.wave-bar.playing {
+  animation: wave 1s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+.wave-bar:nth-child(2) { height: 14px; animation-delay: 0.15s; }
+.wave-bar:nth-child(3) { height: 20px; animation-delay: 0.3s; }
+.wave-bar:nth-child(4) { height: 12px; animation-delay: 0.45s; }
+.wave-bar:nth-child(5) { height: 18px; animation-delay: 0.6s; }
+
+.paused .wave-bar {
+  height: 4px !important;
+  animation-play-state: paused;
+}
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1.0); }
+}
+
+/* Controls */
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.3s 0.2s;
+}
+
+.expanded .player-controls {
+  opacity: 1;
+}
+
+.control-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 232, 216, 0.15);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: var(--text-muted);
+}
+
+.control-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.play-icon {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 8px;
+  border-color: transparent transparent transparent var(--text-primary);
+  margin-left: 2px;
+}
+
+.pause-icon {
+  display: flex;
+  gap: 3px;
+}
+
+.pause-bar {
+  width: 2px;
+  height: 10px;
+  background: var(--text-primary);
+}
+
+.shuffle-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.shuffle-btn.spinning svg {
+  animation: spinShuffle 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes spinShuffle {
+  to { transform: rotate(360deg); }
+}
+
+.close-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
+/* Progress Bar */
+.progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(240, 232, 216, 0.06);
+  border-radius: 0 0 50px 50px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.5s linear;
+}
+
+/* Loading state */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.loading-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: loadPulse 1s ease-in-out infinite;
+}
+
+@keyframes loadPulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .player-wrapper {
+    bottom: 20px;
+    right: 16px;
+  }
+  
+  .capsule.expanded {
+    max-width: 260px;
+  }
+  
+  .track-info {
+    max-width: 90px;
+  }
+}
+
+@media (max-width: 380px) {
+  .capsule.expanded {
+    max-width: 220px;
+  }
+}

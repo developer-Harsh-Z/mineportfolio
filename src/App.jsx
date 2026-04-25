@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './index.css';
 import Contact from './Contact';
+import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 
 function App() {
   const [loaderSplit, setLoaderSplit] = useState(false);
@@ -468,6 +469,7 @@ function App() {
       </section>
 
       <Contact />
+      <MusicPlayer />
 
       <footer>
         <div className="footer-left">© 2025 Harsh</div>

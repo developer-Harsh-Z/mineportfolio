@@ -2,9 +2,30 @@
 
 This document tracks all the changes made to the portfolio project and maps them to specific versions.
 
-## [Version 4] - Current (Latest)
-**Date:** April 24, 2026
-**Summary:** Interactive 2D Image Hero
+## [Version 6] - The Frequency (Music Player)
+**Date:** April 25, 2026
+**Summary:** Integrated a geo-aware, cassette-style music player.
+
+### Added
+- Implemented "The Frequency" component with YouTube IFrame API integration.
+- Added IP-based geolocation detection to personalize music selection (e.g., Hindi lo-fi for India, Ambient for Global).
+- Built a floating cassette UI that expands into a full player with waveform animations and shuffle logic.
+- Integrated a hidden YouTube engine for seamless background playback.
+- Added environment variable support for YouTube Data API keys.
+
+## [Version 5] - Signal Contact System
+**Date:** April 25, 2026
+**Summary:** High-fidelity interactive contact interface with real-time feedback.
+
+### Added
+- Created "The Signal" contact system with two modes: Data Form and Voicemail.
+- Integrated EmailJS for live email delivery from both modes.
+- Implemented real-time voice-to-text transcription for the Voicemail feature using the Web Speech API.
+- Added a cinematic "Terminal Output" animation for form submission feedback.
+- Designed a custom "Wax Seal" animation for a premium tactile feel on voicemail submission.
+- Fixed visibility issues using `IntersectionObserver` to trigger reveal animations reliably.
+
+## [Version 4] - Interactive Hero
 
 ### Added/Changed
 - Replaced the React Three Fiber 3D model with `harsh_img.png`.
