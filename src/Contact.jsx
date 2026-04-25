@@ -312,6 +312,7 @@ const ModeB = () => {
   
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [sendState, setSendState] = useState('idle'); // idle | sending | done | error
 
   const canvasRef = useRef(null);
   const audioCtxRef = useRef(null);
@@ -477,8 +478,36 @@ const ModeB = () => {
     audioUrlRef.current = '';
   };
 
-  const handleSubmit = () => {
-    setRecordingState('submitted');
+  const handleSubmit = async () => {
+    if (!name || !email) {
+      alert('Please fill in your name and email before sending.');
+      return;
+    }
+
+    setSendState('sending');
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name:  name,
+          from_email: email,
+          intent:     'Voicemail',
+          message:    transcript
+            ? `[VOICEMAIL — ${formatTime(time)}]\n\n${transcript.trim()}`
+            : `[VOICEMAIL — ${formatTime(time)}]\n\n(No transcript — audio recorded only)`,
+          sentiment:  'N/A',
+          to_email:   'harshvardhansingh.ds@gmail.com',
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      setSendState('done');
+      setRecordingState('submitted');
+    } catch (err) {
+      console.error('EmailJS voicemail error:', err);
+      setSendState('error');
+    }
   };
 
   const playAudio = () => {
@@ -565,8 +594,21 @@ const ModeB = () => {
                 onChange={e => setEmail(e.target.value)}
               />
           </div>
-
-          <button className="seal-send-btn" onClick={handleSubmit}>seal & send</button>
+          {sendState === 'error' && (
+            <div className="send-error" style={{marginBottom:'12px'}}>
+              <div className="terminal-line">✗ Failed to send. Check your connection.</div>
+            </div>
+          )}
+          <button
+            className="seal-send-btn"
+            onClick={handleSubmit}
+            disabled={sendState === 'sending'}
+            style={sendState === 'sending' ? {opacity:0.6,cursor:'not-allowed'} : {}}
+          >
+            {sendState === 'sending'
+              ? <span style={{display:'flex',alignItems:'center',gap:'12px',justifyContent:'center'}}><span className="spinner" style={{width:'16px',height:'16px',borderWidth:'2px'}}></span>sending...</span>
+              : 'seal & send'}
+          </button>
         </div>
       ) : (
         <div className="success-msg">Sent. Harsh will hear your voice.</div>
