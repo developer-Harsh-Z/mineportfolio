@@ -50,6 +50,35 @@ html, body {
   overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
+  scroll-behavior: smooth;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+  background-repeat: repeat;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 9999;
+  animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
 }
 
 body {
@@ -738,7 +767,7 @@ h1, h2, h3, h4, .harsh-font, .logo {
   padding: 40px 32px;
   position: relative;
   overflow: hidden;
-  transition: background 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .skill-card::before {
@@ -754,6 +783,8 @@ h1, h2, h3, h4, .harsh-font, .logo {
 
 .skill-card:hover {
   background-color: var(--skill-hover-bg);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 0 20px var(--glow-color);
 }
 
 .skill-card:hover::before {
@@ -880,6 +911,21 @@ h1, h2, h3, h4, .harsh-font, .logo {
 .project-row:hover .project-arrow {
   opacity: 1;
   transform: translate(0, 0);
+}
+
+.project-row::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--accent);
+  transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.project-row:hover::after {
+  width: 100%;
 }
 
 /* Leadership Section */
@@ -1204,5 +1250,48 @@ footer {
     flex-direction: column;
     gap: 16px;
     align-items: center;
+  }
+}
+
+/* Footer Styling */
+footer {
+  padding: 80px 5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background-color: var(--bg);
+  position: relative;
+  z-index: 5;
+}
+
+.footer-center {
+  font-family: 'Harsh', sans-serif;
+  font-size: clamp(14px, 2vw, 18px);
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.footer-right {
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  footer {
+    flex-direction: column;
+    gap: 24px;
+    padding: 60px 5vw;
+    text-align: center;
+  }
+  
+  .footer-right {
+    text-align: center;
   }
 }

@@ -437,29 +437,30 @@ function App() {
               <div className="timeline-item scroll-reveal">
                 <div className="timeline-dot"></div>
                 <div className="timeline-date">2025</div>
-                <h3 className="timeline-title">1st Prize — Ideathon, 54th ISTE Convention</h3>
-                <p className="timeline-desc">Led the team to victory at the national convention, demonstrating problem-solving and business acumen.</p>
+                <h3 className="timeline-title">1st Prize — National Ideathon, 54th ISTE Convention</h3>
+                <p className="timeline-desc">Orchestrated a cross-functional team to develop a scalable solution for rural infrastructure. Focused on data-backed feasibility and human-centric design, winning the top spot among 100+ competing teams.</p>
               </div>
               
               <div className="timeline-item scroll-reveal">
                 <div className="timeline-dot"></div>
                 <div className="timeline-date">2024</div>
-                <h3 className="timeline-title">Data Science Intern — 1stop</h3>
-                <p className="timeline-desc">Built SMS Spam Classification (93% acc.) and Hate Speech Detection (97% acc.) models using NLP. Performed full data preprocessing and feature engineering on real-world datasets.</p>
+                <h3 className="timeline-title">Data Science Lead — 1stop Internship</h3>
+                <p className="timeline-desc">Pioneered NLP-driven security layers. Built a Hate Speech Detection engine with 97% accuracy and an SMS Spam Classifier with 93% accuracy. Managed the entire pipeline from raw dataset ingestion to model deployment.</p>
               </div>
               
               <div className="timeline-item scroll-reveal">
                 <div className="timeline-dot"></div>
                 <div className="timeline-date">2024</div>
-                <h3 className="timeline-title">Runner-up — Byte Battle Web Dev</h3>
-                <p className="timeline-desc">Led the web development team, coordinating the project pipeline, ensuring fast delivery and seamless UI/UX implementation.</p>
+                <h3 className="timeline-title">Project Runner-up — Byte Battle Web Dev</h3>
+                <h3 className="timeline-subtitle" style={{fontSize:'12px', color:'var(--accent)', marginBottom:'12px'}}>// Technical Leadership</h3>
+                <p className="timeline-desc">Directed the development of a high-performance web application. Implemented modular architecture and optimized rendering cycles, ensuring the team delivered a production-ready MVP within 48 hours.</p>
               </div>
 
               <div className="timeline-item scroll-reveal">
                 <div className="timeline-dot"></div>
                 <div className="timeline-date">2023</div>
-                <h3 className="timeline-title">1st Prize — Hackathon, Yuva Fest (LTSU)</h3>
-                <p className="timeline-desc">Coordinated a multi-disciplinary team to develop an innovative solution, managing timelines, strategy, and final presentation.</p>
+                <h3 className="timeline-title">Grand Winner — Yuva Fest Hackathon (LTSU)</h3>
+                <p className="timeline-desc">Bridged the gap between technical execution and business strategy. Coordinated with developers and designers to build a disruptive prototype, winning first place for innovation and execution quality.</p>
               </div>
             </div>
           </div>
@@ -471,7 +472,9 @@ function App() {
       <footer>
         <div className="footer-left">© 2025 Harsh</div>
         <div className="footer-center">Designed with intention. Built with data.</div>
-        <div className="footer-right">Punjab, India</div>
+        <div className="footer-right">
+          <a href="#hero" style={{color: 'inherit', textDecoration: 'none'}}>Back to top ↑</a>
+        </div>
       </footer>
     </>
   );
