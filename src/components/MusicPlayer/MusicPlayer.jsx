@@ -219,17 +219,23 @@ const MusicPlayer = () => {
   return (
     <div className="player-wrapper">
       <div className={`capsule ${isExpanded ? 'expanded' : ''} ${!isPlaying ? 'paused' : ''}`}>
-        {/* Toggle / Cassette Icon */}
         <div className="cassette-toggle" onClick={handleToggleExpand}>
-          <div className={`mini-reels ${isPlaying ? 'playing-reels' : ''}`}>
-            <div className={`mini-reel ${isPlaying ? 'reel-spinning' : ''}`}>
-              <div className="mini-reel-inner"></div>
+          {isPlaying ? (
+            <div className={`mini-reels playing-reels`}>
+              <div className={`mini-reel reel-spinning`}>
+                <div className="mini-reel-inner"></div>
+              </div>
+              <div className={`mini-reel reel-spinning`}>
+                <div className="mini-reel-inner"></div>
+              </div>
             </div>
-            <div className={`mini-reel ${isPlaying ? 'reel-spinning' : ''}`}>
-              <div className="mini-reel-inner"></div>
+          ) : (
+            <div className="idle-dots">
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
-          </div>
-          {!isExpanded && <span className="toggle-label">The Frequency</span>}
+          )}
           <div className={`notification-dot ${isPlaying ? 'visible' : ''}`}></div>
         </div>
 

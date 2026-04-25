@@ -22,7 +22,7 @@
   gap: 0;
   width: auto;
   min-width: 56px;
-  max-width: 140px; /* Wider collapsed state for the label */
+  max-width: 56px;
   height: 48px;
   overflow: hidden;
   transition: max-width 0.6s cubic-bezier(0.76, 0, 0.24, 1),
@@ -101,15 +101,18 @@
   background: var(--accent);
 }
 
-.toggle-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  white-space: nowrap;
-  opacity: 1;
-  transition: opacity 0.3s;
+.idle-dots {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.idle-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.6;
 }
 
 .notification-dot {
