@@ -11,6 +11,7 @@ function App() {
   const [theme, setTheme] = useState('dark');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [imageTransform, setImageTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)');
+  const [time, setTime] = useState(new Date());
   
   const imageRef = useRef(null);
   
@@ -160,6 +161,15 @@ function App() {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  };
+
   return (
     <>
       <div id="cursor-dot" ref={dotRef}></div>
@@ -195,13 +205,19 @@ function App() {
           <a href="#projects">Projects</a>
           <a href="#leadership">Leadership</a>
           <a href="#contact">Contact</a>
-          <button onClick={toggleTheme} className="theme-toggle">
-            {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
-          </button>
         </div>
-        <div className={`hamburger ${mobileMenuOpen ? 'active' : ''}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          <span></span>
-          <span></span>
+        <div className="nav-actions">
+          <div className="clock-capsule">
+            <span className="blink-light"></span>
+            {formatTime(time)}
+          </div>
+          <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle Theme">
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+          <div className={`hamburger ${mobileMenuOpen ? 'active' : ''}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <span></span>
+            <span></span>
+          </div>
         </div>
       </nav>
 
@@ -211,9 +227,6 @@ function App() {
             {id.charAt(0).toUpperCase() + id.slice(1)}
           </a>
         ))}
-        <button onClick={() => { toggleTheme(); setMobileMenuOpen(false); }} className="mobile-theme-toggle">
-          {theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-        </button>
       </div>
 
       <section id="hero" className="hero">

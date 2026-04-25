@@ -305,18 +305,56 @@ h1, h2, h3, h4, .harsh-font, .logo {
   color: var(--text-primary);
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.clock-capsule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  transition: border-color 0.3s ease;
+}
+
+.blink-light {
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
 .theme-toggle {
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 4px 10px;
-  border-radius: 4px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   transition: all 0.3s ease;
-  margin-left: 16px;
+  cursor: auto;
+  margin: 0;
+  padding: 0;
 }
 
 .theme-toggle:hover {
@@ -372,24 +410,7 @@ h1, h2, h3, h4, .harsh-font, .logo {
   color: var(--accent);
 }
 
-.mobile-theme-toggle {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  padding: 12px 24px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-}
 
-.mobile-theme-toggle:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
 
 /* Sections Global */
 .scroll-reveal {
@@ -1077,6 +1098,21 @@ footer {
   
   .hamburger {
     display: flex;
+  }
+  
+  .nav-actions {
+    gap: 12px;
+  }
+  
+  .theme-toggle {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .clock-capsule {
+    padding: 4px 10px;
+    font-size: 10px;
   }
   
   .hamburger.active span:nth-child(1) {
