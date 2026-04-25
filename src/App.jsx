@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './index.css';
+import Contact from './Contact';
 
 function App() {
   const [loaderSplit, setLoaderSplit] = useState(false);
@@ -465,25 +466,7 @@ function App() {
         </div>
       </section>
 
-      <section id="contact" className="contact">
-        <div className="chapter-label scroll-reveal">
-          <span>Chapter 05 — Let's Talk</span>
-        </div>
-        <div className="contact-wrap scroll-reveal">
-          <div className="contact-small">Got a project, idea, or opportunity?</div>
-          <h2 className="contact-heading">
-            Let's<br />
-            build<br />
-            <span className="italic highlight">together.</span>
-          </h2>
-          <a href="mailto:harshvardhansingh.ds@gmail.com" className="email-btn">harshvardhansingh.ds@gmail.com ↗</a>
-          <div className="social-links">
-            <a href="https://github.com/harshvardhansingh" target="_blank" rel="noreferrer">GitHub ↗</a>
-            <a href="https://linkedin.com/in/harshvardhansingh775" target="_blank" rel="noreferrer">LinkedIn ↗</a>
-            <a href="./Harsh_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a>
-          </div>
-        </div>
-      </section>
+      <Contact />
 
       <footer>
         <div className="footer-left">© 2025 Harsh</div>
