@@ -3,9 +3,9 @@ import emailjs from '@emailjs/browser';
 import './Contact.css';
 
 // ── EmailJS config ── fill these in after creating your free account at emailjs.com
-const EMAILJS_SERVICE_ID  = 'service_XXXXXXX';   // e.g. 'service_abc123'
-const EMAILJS_TEMPLATE_ID = 'template_XXXXXXX';  // e.g. 'template_xyz789'
-const EMAILJS_PUBLIC_KEY  = 'XXXXXXXXXXXXXXXXXXXX'; // Public Key from EmailJS dashboard
+const EMAILJS_SERVICE_ID  = 'service_mineportfolio';
+const EMAILJS_TEMPLATE_ID = 'template_portfolio';
+const EMAILJS_PUBLIC_KEY  = 'DOLeDBICa0Aa07s1x';
 
 // ----------------------------------------------------
 // TERMINAL OUTPUT — runs exactly once, no infinite loop
