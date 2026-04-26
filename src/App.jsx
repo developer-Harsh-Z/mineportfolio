@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import './index.css';
 import Contact from './Contact';
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
+import HBot from './components/HBot/HBot';
 
 function App() {
   const [loaderSplit, setLoaderSplit] = useState(false);
@@ -470,6 +471,7 @@ function App() {
 
       <Contact />
       <MusicPlayer />
+      {loaderHidden && <HBot />}
 
       <footer>
         <div className="footer-left">© 2025 Harsh</div>
