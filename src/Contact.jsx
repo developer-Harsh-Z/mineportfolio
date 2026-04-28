@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import emailjs from '@emailjs/browser';
+import { createClient } from '@supabase/supabase-js';
 import './Contact.css';
 
-// ── EmailJS config ── fill these in after creating your free account at emailjs.com
-const EMAILJS_SERVICE_ID  = 'service_mineportfolio';
-const EMAILJS_TEMPLATE_ID = 'template_portfolio';
-const EMAILJS_PUBLIC_KEY  = 'DOLeDBICa0Aa07s1x';
+// ── Supabase config ──
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  console.warn("Supabase credentials missing from .env file!");
+}
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ----------------------------------------------------
 // TERMINAL OUTPUT — runs exactly once, no infinite loop
@@ -142,22 +147,21 @@ const ModeA = () => {
     setSendState('sending');
 
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          from_name:  name,
-          from_email: email,
-          intent:     intent,
-          message:    message,
-          sentiment:  sentiment.toFixed(2),
-          to_email:   'harshvardhansingh.ds@gmail.com',
-        },
-        EMAILJS_PUBLIC_KEY
-      );
+      const { data, error } = await supabase.functions.invoke('send-email', {
+        body: {
+          name,
+          email,
+          intent,
+          message,
+          sentiment: sentiment.toFixed(2),
+        }
+      });
+
+      if (error) throw error;
+      
       setSendState('done');
     } catch (err) {
-      console.error('EmailJS error:', err);
+      console.error('Submission error:', err);
       setSendState('error');
       setSubmitting(false);
     }
@@ -325,6 +329,16 @@ const ModeB = () => {
   
   const recognitionRef = useRef(null);
 
+  // Helper: Convert Blob to Base64 for EmailJS attachments
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
   // Formatting timer
   const formatTime = (secs) => {
     const m = Math.floor(secs / 60).toString().padStart(2, '0');
@@ -487,25 +501,26 @@ const ModeB = () => {
     setSendState('sending');
 
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          from_name:  name,
-          from_email: email,
-          intent:     'Voicemail',
-          message:    transcript
-            ? `[VOICEMAIL — ${formatTime(time)}]\n\n${transcript.trim()}`
-            : `[VOICEMAIL — ${formatTime(time)}]\n\n(No transcript — audio recorded only)`,
-          sentiment:  'N/A',
-          to_email:   'harshvardhansingh.ds@gmail.com',
-        },
-        EMAILJS_PUBLIC_KEY
-      );
+      const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+      const base64Audio = await blobToBase64(audioBlob);
+
+      const { data, error } = await supabase.functions.invoke('send-email', {
+        body: {
+          name,
+          email,
+          intent: 'Voicemail',
+          message: transcript || '(Audio recording only)',
+          base64Audio,
+          time: formatTime(time)
+        }
+      });
+
+      if (error) throw error;
+
       setSendState('done');
       setRecordingState('submitted');
     } catch (err) {
-      console.error('EmailJS voicemail error:', err);
+      console.error('Voicemail submission error:', err);
       setSendState('error');
     }
   };

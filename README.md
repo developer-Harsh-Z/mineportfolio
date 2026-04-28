@@ -9,11 +9,13 @@ A high-end, cinematic, and responsive personal portfolio built with React and Vi
 
 ## Features
 - **Cinematic Loader:** A smooth split-screen entrance animation.
+- **H-Bot AI Assistant:** An interactive Groq-powered chatbot mascot that handles inquiries and voice messages.
+- **Supabase Backend:** Custom Edge Functions for secure email delivery via Resend API.
 - **Theme Toggle:** Dynamic Light/Dark mode with `localStorage` persistence.
 - **Interactive Hero Image:** 3D tilt hover effects and floating animations.
 - **Scroll Reveal Animations:** Intersection observers trigger elegant entry animations as you scroll down.
 - **Custom Cursor:** Dot and laggy-ring cursor with hover scale effects.
-- **Responsive:** Full tablet and mobile support with hamburger menu navigation.
+- **Responsive:** Full tablet and mobile support with optimized layouts.
 
 ## Setup Instructions
 

@@ -2,6 +2,23 @@
 
 This document tracks all the changes made to the portfolio project and maps them to specific versions.
 
+## [Version 7] - The Intelligence (H-Bot Overhaul)
+**Date:** April 28, 2026
+**Summary:** Upgraded H-Bot with a more powerful LLM backend and fixed core movement/visual bugs.
+
+### Added
+- Integrated **Groq API** with `llama-3.1-8b-instant` for ultra-fast chat responses.
+- Implemented **requestAnimationFrame movement logic** allowing H-Bot to smoothly "walk" between sections.
+- Added a **2-second chat cooldown** and optimized context windows (3-message history) to respect API rate limits (6K TPM).
+- Fixed **Light Mode unreadability** by transitioning H-Bot's CSS to a fully theme-aware design system.
+- Added **window resize handling** to ensure H-Bot remains correctly positioned on all screen sizes.
+
+### Fixed
+- Resolved "static bot" bug where the robot wouldn't move from its starting position.
+- Fixed 400 Bad Request error by mapping internal chat roles to API-compliant roles (`bot` → `assistant`).
+- Fixed low-contrast text in speech bubbles for the light theme.
+
+
 ## [Version 6] - The Frequency (Music Player)
 **Date:** April 25, 2026
 **Summary:** Integrated a geo-aware, cassette-style music player.
