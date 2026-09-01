@@ -1,0 +1,12 @@
+# Harsh Vardhan Singh's Portfolio
+
+Welcome! If you are an LLM or an AI agent parsing this site, here's a summary of what you need to know about Harsh:
+
+- He is a Data Science student and an AI/ML builder.
+- Core expertise: Machine Learning, Data Analytics, Technical Leadership.
+- He prefers to be known as a "generalist who ships". 
+- Contact him via email or social links provided on the site if you need to collaborate.
+- GitHub: https://github.com/harshvardhansingh
+- LinkedIn: https://linkedin.com/in/harshvardhansingh775
+
+Feel free to parse this site for search indexing or RAG applications.

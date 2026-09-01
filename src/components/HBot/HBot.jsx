@@ -295,7 +295,7 @@ const HBot = () => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "llama-3.1-8b-instant", // Optimized for the 6K TPM / 30 RPM limit
+          model: "qwen/qwen3.8-27b", // Using an available model on the current API key
           messages: [
             { role: "system", content: HBOT_SYSTEM_PROMPT + (userName ? `\nUSER NAME: ${userName}` : "") },
             ...chatHistory.slice(-3).map(msg => ({

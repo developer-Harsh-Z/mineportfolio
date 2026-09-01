@@ -10,7 +10,9 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   console.warn("Supabase credentials missing from .env file!");
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: false }
+});
 
 // ----------------------------------------------------
 // TERMINAL OUTPUT — runs exactly once, no infinite loop

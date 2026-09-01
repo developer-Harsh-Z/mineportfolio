@@ -242,7 +242,7 @@ function App() {
             style={{ transform: imageTransform }}
           >
             <div className="hero-image-glow"></div>
-            <img src="/images/harsh_img.png" alt="Harsh" className="hero-image" />
+            <img src="/images/harsh_img.png" alt="Portrait of Harsh Vardhan Singh" className="hero-image" />
           </div>
         </div>
         <div className="hero-content" style={{ zIndex: 10 }}>
