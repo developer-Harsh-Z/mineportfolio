@@ -6,6 +6,8 @@ import App from './App.jsx'
 import ExperiencePage from './components/Experience/ExperiencePage.jsx'
 import NotFound from './NotFound.jsx'
 
+import { Analytics } from '@vercel/analytics/react'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
@@ -15,5 +17,6 @@ createRoot(document.getElementById('root')).render(
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
+    <Analytics />
   </StrictMode>,
 )

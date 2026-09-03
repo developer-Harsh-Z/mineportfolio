@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import Lenis from 'lenis';
 import { Link } from 'react-router-dom';
 import './ExperiencePage.css';
@@ -69,41 +69,47 @@ const experiences = [
   },
 ];
 
-const CARD_H   = 320;  // px — open card height
+const CARD_H   = 360;  // px — open card height
 const SCROLL_PER = 700; // px scroll per folder
 const HERO_VH  = 0.9;  // hero is 90vh
 
 // ─── Single folder — all animation driven by continuous motion values ────────
 function FolderItem({ exp, i, total, scrollY, zoneStart }) {
-  const start = zoneStart + i * SCROLL_PER;
-  const peak  = zoneStart + (i + 0.5) * SCROLL_PER;
-  const end   = zoneStart + (i + 1) * SCROLL_PER;
+  const startOpen = zoneStart + i * SCROLL_PER;
+  const fullOpen  = zoneStart + (i + 0.5) * SCROLL_PER;
+  const startClose= zoneStart + (i + 1) * SCROLL_PER;
+  const fullClose = zoneStart + (i + 1.5) * SCROLL_PER;
   const isLast = i === total - 1;
 
-  const bodyH = useTransform(scrollY, [start, peak, end], [0, CARD_H, isLast ? CARD_H : 0]);
+  const bodyH = useTransform(
+    scrollY,
+    [startOpen, fullOpen, startClose, fullClose],
+    [0, CARD_H, CARD_H, isLast ? CARD_H : 0]
+  );
 
   // Folder lifts forward (translateY up) when active
-  const lift = useTransform(scrollY, [start, peak, end], [0, -4, isLast ? -4 : 0]);
+  const lift = useTransform(scrollY, [startOpen, fullOpen, startClose, fullClose], [0, -4, -4, isLast ? -4 : 0]);
 
   // Shadow deepens when folder is open (depth illusion)
   const shadow = useTransform(scrollY,
-    [start, peak, end],
+    [startOpen, fullOpen, startClose, fullClose],
     [
       '0 2px 4px rgba(0,0,0,0.12)',
+      '0 16px 40px rgba(0,0,0,0.35)',
       '0 16px 40px rgba(0,0,0,0.35)',
       isLast ? '0 16px 40px rgba(0,0,0,0.35)' : '0 2px 4px rgba(0,0,0,0.12)',
     ]
   );
 
   // Orange accent line grows under the tab when folder is active
-  const lineW = useTransform(scrollY, [start, peak, end], ['0%', '100%', isLast ? '100%' : '0%']);
+  const lineW = useTransform(scrollY, [startOpen, fullOpen, startClose, fullClose], ['0%', '100%', '100%', isLast ? '100%' : '0%']);
 
   // Card content fades in slightly after the body starts opening
   const cardOpacity = useTransform(scrollY,
-    [start, start + SCROLL_PER * 0.25, peak, end],
+    [startOpen, startOpen + SCROLL_PER * 0.25, startClose, fullClose],
     [0, 1, 1, isLast ? 1 : 0]
   );
-  const cardSlide = useTransform(scrollY, [start, start + SCROLL_PER * 0.3], [12, 0]);
+  const cardSlide = useTransform(scrollY, [startOpen, startOpen + SCROLL_PER * 0.3], [12, 0]);
 
   // Each folder's z-index — earlier folders sit on top when stacked
   const zIndex = total - i;
@@ -115,17 +121,13 @@ function FolderItem({ exp, i, total, scrollY, zoneStart }) {
     >
       {/* ── Folder header: the "manila tab" strip ── */}
       <div className="folder-header">
-        {/* Physical tab shape (sticks out top-left) */}
-        <div className="folder-physical-tab">
-          <span className="ptab-num">F-0{i + 1}</span>
-          <span className="ptab-name">{exp.company}</span>
-        </div>
-
         {/* Full-width header row below the tab */}
         <div className="folder-header-row">
           <span className="fh-num">0{i + 1}</span>
-          <span className="fh-company">{exp.company}</span>
-          <span className="fh-role">{exp.role}</span>
+          <div className="fh-title-group">
+            <span className="fh-company">{exp.company}</span>
+            <span className="fh-role">{exp.role}</span>
+          </div>
           <span className="fh-date">{exp.date}</span>
         </div>
 
@@ -183,6 +185,15 @@ export default function ExperiencePage() {
   const zoneEnd     = zoneStart + zoneLength;
   const pageH       = zoneEnd + vh * 0.4;
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    let idx = Math.floor((latest - zoneStart) / SCROLL_PER);
+    if (idx < 0) idx = 0;
+    if (idx >= total) idx = total - 1;
+    if (idx !== activeIndex) setActiveIndex(idx);
+  });
+
   // Overlay fades in/out at zone boundaries (smooth, no pop)
   const overlayOpacity = useTransform(
     scrollY,
@@ -190,6 +201,9 @@ export default function ExperiencePage() {
     [0, 1, 1, 0]
   );
   const overlayPtr = useTransform(overlayOpacity, v => v > 0.05 ? 'auto' : 'none');
+  
+  // Fade out hero text on scroll to prevent bleeding over navbar
+  const heroOpacity = useTransform(scrollY, [0, vh * 0.5], [1, 0]);
 
   // Tab click — scroll to center of that folder's scroll window
   const goTo = (i) => {
@@ -247,15 +261,18 @@ export default function ExperiencePage() {
         <nav id="navbar" className="scrolled" style={{ zIndex: 300 }}>
           <div className="logo"><Link to="/" style={{ color:'inherit', textDecoration:'none' }}>H<span>.</span></Link></div>
           <div className="nav-links"><Link to="/">← Back to Home</Link></div>
+          <div className="nav-actions mobile-only-back">
+            <Link to="/" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", color: "var(--text-primary)", textDecoration: "none", border: "1px solid var(--border)", padding: "6px 12px", borderRadius: "20px" }}>← Back</Link>
+          </div>
         </nav>
 
         {/* Hero */}
-        <div className="exp-hero">
+        <motion.div className="exp-hero" style={{ opacity: heroOpacity }}>
           <div className="ghost-number-section" style={{ opacity:0.06, userSelect:'none' }}>05</div>
           <h1 className="section-heading">The <span className="italic highlight">Journey.</span></h1>
           <p className="exp-subtitle">// Scroll to flip through the files</p>
           <div className="exp-arrow">↓</div>
-        </div>
+        </motion.div>
 
         {/* ── Fixed overlay: the whole "filing cabinet" ── */}
         <motion.div
@@ -270,7 +287,13 @@ export default function ExperiencePage() {
           </div>
 
           {/* The stacked folder pile */}
-          <div className="folder-stack">
+          <div className="folder-stack" style={{ position: 'relative' }}>
+            {/* Dynamic Physical tab shape that stays on top and updates with active folder */}
+            <div className="folder-physical-tab">
+              <span className="ptab-num">F-0{activeIndex + 1}</span>
+              <span className="ptab-name">{experiences[activeIndex].company}</span>
+            </div>
+            
             {experiences.map((exp, i) => (
               <div key={i} onClick={() => goTo(i)}>
                 <FolderItem

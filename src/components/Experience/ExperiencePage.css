@@ -126,15 +126,16 @@
 }
 .folder-header-row {
   display: grid;
-  grid-template-columns: 36px 1fr 1fr 140px;
+  grid-template-columns: 36px 1fr 140px;
   align-items: center;
   padding: 0 22px;
   height: 54px;
   font-family: 'JetBrains Mono', monospace;
 }
 .fh-num  { font-size:0.68rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; }
+.fh-title-group { display: flex; align-items: baseline; gap: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .fh-company { font-size:0.88rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--folder-text); }
-.fh-role { font-size:0.75rem; color:var(--text-muted); font-style:italic; font-family:'Instrument Serif',serif; }
+.fh-role { font-size:0.75rem; color:#a8a094; font-style:italic; font-family:'Instrument Serif',serif; }
 .fh-date { font-size:0.67rem; color:var(--text-muted); text-align:right; }
 
 /* Active accent line */
@@ -154,7 +155,7 @@
 
 /* ── Dark terminal card (the actual page inside) ── */
 .folder-card {
-  height: 320px; /* must match CARD_H in JSX */
+  height: 360px; /* must match CARD_H in JSX */
   background: #0d0b09;
   border-top: 1.5px solid var(--folder-border);
   border-bottom: 1.5px solid var(--folder-border);
@@ -166,8 +167,8 @@
 [data-theme="light"] .folder-card { background: #111010; }
 
 .fc-header { display:flex; justify-content:space-between; align-items:flex-start; }
-.fc-id { font-size:0.65rem; color:#505050; letter-spacing:0.12em; text-transform:uppercase; }
-.fc-org { font-size:0.65rem; color:#505050; letter-spacing:0.04em; text-align:right; }
+.fc-id { font-size:0.65rem; color:#8a857d; letter-spacing:0.12em; text-transform:uppercase; }
+.fc-org { font-size:0.65rem; color:#8a857d; letter-spacing:0.04em; text-align:right; }
 
 .fc-body { flex:1; display:flex; flex-direction:column; justify-content:center; gap:0.75rem; padding:1rem 0; }
 .fc-line { font-size:0.88rem; color:#bbb5aa; line-height:1.6; display:flex; gap:0.6rem; align-items:flex-start; }
@@ -175,7 +176,7 @@
 
 .fc-footer { display:flex; justify-content:space-between; align-items:flex-end; }
 .fc-company { font-size:0.88rem; font-weight:700; color:#ddd5c8; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.18rem; }
-.fc-meta { font-size:0.67rem; color:#505050; }
+.fc-meta { font-size:0.67rem; color:#8a857d; }
 .fc-cursor { font-size:1.1rem; color:#ddd5c8; animation:fcBlink 1s step-end infinite; }
 @keyframes fcBlink { 0%,100%{opacity:1} 50%{opacity:0} }
 
@@ -195,11 +196,20 @@
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .folder-header-row { grid-template-columns:28px 1fr 100px; padding:0 14px; height:48px; }
-  .fh-role { display:none; }
-  .fh-date { font-size:0.6rem; }
-  .folder-physical-tab { left:12px; min-width:110px; }
-  .folder-card { padding:1.4rem 1.2rem; }
+  .folder-header-row { grid-template-columns:28px 1fr 80px; padding:0 14px; height:auto; min-height: 54px; padding-top: 8px; padding-bottom: 8px; }
+  .fh-title-group { flex-direction: column; align-items: flex-start; gap: 2px; white-space: normal; overflow: visible; }
+  .fh-company { font-size: 0.75rem; white-space: normal; line-height: 1.2; }
+  .fh-role { font-size: 0.65rem; font-style: normal; }
+  .fh-date { font-size:0.6rem; align-self: flex-start; margin-top: 2px; }
+  .cabinet-label { margin-bottom: 35px; }
+  .folder-physical-tab { left:12px; min-width:110px; top: -25px; }
+  .folder-stack { padding-top: 32px; }
+  .folder-card { height: 100%; padding:1.4rem 1.2rem; overflow-y: auto; overflow-x: hidden; }
   .fc-line { font-size:0.8rem; }
-  .exp-overlay { padding:70px 14px 16px; }
+  .exp-overlay { padding:100px 14px 16px; }
+  .mobile-only-back { display: flex; }
+}
+
+@media (min-width: 769px) {
+  .mobile-only-back { display: none; }
 }

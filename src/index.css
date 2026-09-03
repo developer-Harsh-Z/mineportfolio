@@ -1148,6 +1148,9 @@ footer {
   
   .hamburger {
     display: flex;
+    padding: 12px;
+    margin: -12px;
+    z-index: 1100;
   }
   
   .nav-actions {
@@ -1197,10 +1200,16 @@ footer {
     gap: 16px;
     align-items: center;
     text-align: center;
+    padding-bottom: 120px;
   }
   
   .about, .skills, .projects, .leadership, .contact {
     padding: 80px 6vw;
+  }
+  
+  .headline {
+    font-size: clamp(32px, 11vw, 64px);
+    line-height: 1.05;
   }
   
   .contact-heading {
@@ -1223,6 +1232,10 @@ footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+  
+  .headline {
+    font-size: clamp(28px, 12vw, 48px);
   }
   
   .project-name {

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './index.css';
-import Contact from './Contact';
+import Contact from './components/Contact/Contact';
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 import HBot from './components/HBot/HBot';
 import { Link } from 'react-router-dom';

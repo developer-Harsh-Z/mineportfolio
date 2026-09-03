@@ -29,25 +29,54 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Harsh Vardhan Singh",
-      "url": "https://harshvardhansingh.me/",
-      "image": "https://harshvardhansingh.me/images/harsh_img.png",
-      "sameAs": [
-        "https://github.com/harshvardhansingh",
-        "https://linkedin.com/in/harshvardhansingh775"
-      ],
-      "jobTitle": "Data Scientist & AI Builder",
-      "description": "Data Science student. AI/ML builder. Analytics thinker. Leadership by default. The generalist who ships.",
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "LTSU"
-      },
-      "knowsAbout": ["Python", "Machine Learning", "Data Science", "Data Analytics", "Artificial Intelligence", "SQL"],
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://harshvardhansingh.me/"
-      }
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://harshvardhansingh.me/#person",
+          "name": "Harsh Vardhan Singh",
+          "url": "https://harshvardhansingh.me/",
+          "image": "https://harshvardhansingh.me/images/harsh_img.png",
+          "sameAs": [
+            "https://github.com/harshvardhansingh",
+            "https://linkedin.com/in/harshvardhansingh775"
+          ],
+          "jobTitle": "Data Scientist & AI Builder",
+          "description": "Data Science student. AI/ML builder. Analytics thinker. Leadership by default. The generalist who ships.",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "LTSU"
+          },
+          "knowsAbout": ["Python", "Machine Learning", "Data Science", "Data Analytics", "Artificial Intelligence", "SQL"],
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://harshvardhansingh.me/"
+          }
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Air Quality Predictive Model",
+          "keywords": "Python, Scikit-learn, Random Forest, AI/ML",
+          "author": { "@id": "https://harshvardhansingh.me/#person" }
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Grocery Store Sales Insights",
+          "keywords": "Python, Scikit-learn, Power BI, Analytics",
+          "author": { "@id": "https://harshvardhansingh.me/#person" }
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Hate Speech Detection",
+          "keywords": "Python, NLP, Decision Tree, AI/NLP",
+          "author": { "@id": "https://harshvardhansingh.me/#person" }
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "SMS Spam Classification",
+          "keywords": "Python, SVM, Naive Bayes, AI/ML",
+          "author": { "@id": "https://harshvardhansingh.me/#person" }
+        }
+      ]
     }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">

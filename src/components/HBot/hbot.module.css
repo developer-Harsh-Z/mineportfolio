@@ -449,9 +449,9 @@
 
 /* Mobile Tweaks */
 @media (max-width: 768px) {
-  .hbot-container { bottom: 20px; }
-  .hbot-floor { bottom: 18px; }
-  .hbot-visual { transform: scale(0.7); }
+  .hbot-container { bottom: 10px; }
+  .hbot-floor { bottom: 8px; }
+  .hbot-visual { transform: scale(0.55); }
   .hbot-bubble { 
     max-width: 280px; 
     min-width: 240px; 
