@@ -7,6 +7,7 @@ import ExperiencePage from './components/Experience/ExperiencePage.jsx'
 import NotFound from './NotFound.jsx'
 
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -18,5 +19,6 @@ createRoot(document.getElementById('root')).render(
       </Routes>
     </BrowserRouter>
     <Analytics />
+    <SpeedInsights />
   </StrictMode>,
 )
