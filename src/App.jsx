@@ -3,6 +3,7 @@ import './index.css';
 import Contact from './Contact';
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 import HBot from './components/HBot/HBot';
+import { Link } from 'react-router-dom';
 
 function App() {
   const [loaderSplit, setLoaderSplit] = useState(false);
@@ -11,7 +12,8 @@ function App() {
   const [showLines, setShowLines] = useState([false, false, false]);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState(() => localStorage.getItem('portfolio-theme') || 'dark');
+  // eslint-disable-next-line no-unused-vars
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [imageTransform, setImageTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)');
   const [time, setTime] = useState(new Date());
@@ -152,10 +154,8 @@ function App() {
   }, [loaderHidden]);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }, []);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
@@ -206,6 +206,7 @@ function App() {
           <a href="#about">Story</a>
           <a href="#skills">Skills</a>
           <a href="#projects">Projects</a>
+          <Link to="/experience">Experience</Link>
           <a href="#leadership">Leadership</a>
           <a href="#contact">Contact</a>
         </div>
@@ -225,14 +226,20 @@ function App() {
       </nav>
 
       <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}>
-        {['about', 'skills', 'projects', 'leadership', 'contact'].map((id, i) => (
+        {['about', 'skills', 'projects'].map((id, i) => (
+          <a key={i} href={`#${id}`} onClick={() => setMobileMenuOpen(false)}>
+            {id.charAt(0).toUpperCase() + id.slice(1)}
+          </a>
+        ))}
+        <Link to="/experience" onClick={() => setMobileMenuOpen(false)}>Experience</Link>
+        {['leadership', 'contact'].map((id, i) => (
           <a key={i} href={`#${id}`} onClick={() => setMobileMenuOpen(false)}>
             {id.charAt(0).toUpperCase() + id.slice(1)}
           </a>
         ))}
       </div>
 
-      <section id="hero" className="hero">
+      <section id="hero" className="hero" tabIndex="-1">
         <div className="hero-image-container">
           <div 
             className="hero-image-wrapper"
@@ -242,7 +249,7 @@ function App() {
             style={{ transform: imageTransform }}
           >
             <div className="hero-image-glow"></div>
-            <img src="/images/harsh_img.png" alt="Portrait of Harsh Vardhan Singh" className="hero-image" />
+            <img src="/images/harsh_img.png" alt="Portrait of Harsh Vardhan Singh" className="hero-image" width="400" height="500" fetchpriority="high" />
           </div>
         </div>
         <div className="hero-content" style={{ zIndex: 10 }}>

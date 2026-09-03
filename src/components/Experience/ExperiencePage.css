@@ -1,0 +1,205 @@
+/* =====================================================
+   Experience — Physical Filing Cabinet Aesthetic
+   ===================================================== */
+
+/* ── Page shell ── */
+.exp-page {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  position: relative;
+}
+#navbar { z-index: 300 !important; }
+
+/* ── Hero ── */
+.exp-hero {
+  height: 90vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; padding: 0 24px;
+  position: relative;
+}
+.exp-hero h1 { font-size: clamp(3.5rem, 9vw, 7rem); line-height: 0.95; margin-bottom: 1.25rem; }
+.exp-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; color: var(--text-muted); margin-bottom: 2rem;
+}
+.exp-arrow { font-size: 1.5rem; color: var(--text-muted); animation: expBounce 2s ease-in-out infinite; }
+@keyframes expBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(10px)} }
+
+/* ── Fixed overlay ── */
+.exp-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background-color: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 76px 32px 20px;
+  will-change: opacity;
+}
+
+/* ── Cabinet header label ── */
+.cabinet-label {
+  width: 100%; max-width: 840px;
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 20px;
+}
+.cabinet-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(255,61,0,0.08);
+  padding: 3px 10px; border-radius: 2px;
+  border: 1px solid rgba(255,61,0,0.2);
+  flex-shrink: 0;
+}
+.cabinet-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--text-muted);
+  flex-shrink: 0;
+}
+.cabinet-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ══════════════════════════════════════════════════════
+   FOLDER STACK — the "filing cabinet" visual
+   Each folder-item sits one below the other, tightly packed.
+   Their box-shadow and translateY give the depth illusion.
+══════════════════════════════════════════════════════ */
+.folder-stack {
+  width: 100%; max-width: 840px;
+  display: flex; flex-direction: column;
+  gap: 0;
+  padding-top: 32px; /* room for the first folder's physical tab */
+}
+
+/* ── Individual folder ── */
+.folder-item {
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+  overflow: visible;
+  cursor: pointer;
+  will-change: transform, box-shadow;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  margin-top: -1px;
+  /* Clip the body/card but not the physical tab above the header */
+  isolation: isolate;
+}
+
+/* ── The physical folder tab (sticks out top-left, above the header row) ──
+   This is what makes it look like a real manila folder!
+*/
+.folder-physical-tab {
+  position: absolute;
+  top: -30px;
+  left: 16px;
+  height: 30px;
+  min-width: 130px;
+  max-width: 190px;
+  background: var(--folder-tab-bg);
+  border: 1.5px solid var(--folder-border);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  display: flex; align-items: center;
+  padding: 0 12px; gap: 7px;
+  z-index: 5; /* always above the card body */
+}
+.ptab-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.06em; flex-shrink: 0;
+}
+.ptab-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--folder-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── Header row (the full-width strip of the folder's face) ── */
+.folder-header {
+  position: relative;
+  background: var(--folder-tab-bg);
+  border: 1.5px solid var(--folder-border);
+  border-radius: 0 4px 0 0;
+}
+.folder-header-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 1fr 140px;
+  align-items: center;
+  padding: 0 22px;
+  height: 54px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.fh-num  { font-size:0.68rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; }
+.fh-company { font-size:0.88rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--folder-text); }
+.fh-role { font-size:0.75rem; color:var(--text-muted); font-style:italic; font-family:'Instrument Serif',serif; }
+.fh-date { font-size:0.67rem; color:var(--text-muted); text-align:right; }
+
+/* Active accent line */
+.folder-accent-line {
+  position: absolute; bottom: 0; left: 0;
+  height: 2.5px; background: var(--accent);
+  will-change: width;
+}
+
+/* ── Folder body (the "pages" inside the folder, slides open) ── */
+.folder-body {
+  will-change: height;
+  background: var(--bg);
+  border-left: 1.5px solid var(--folder-border);
+  border-right: 1.5px solid var(--folder-border);
+}
+
+/* ── Dark terminal card (the actual page inside) ── */
+.folder-card {
+  height: 320px; /* must match CARD_H in JSX */
+  background: #0d0b09;
+  border-top: 1.5px solid var(--folder-border);
+  border-bottom: 1.5px solid var(--folder-border);
+  padding: 1.8rem 2.2rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  will-change: opacity, transform;
+}
+[data-theme="light"] .folder-card { background: #111010; }
+
+.fc-header { display:flex; justify-content:space-between; align-items:flex-start; }
+.fc-id { font-size:0.65rem; color:#505050; letter-spacing:0.12em; text-transform:uppercase; }
+.fc-org { font-size:0.65rem; color:#505050; letter-spacing:0.04em; text-align:right; }
+
+.fc-body { flex:1; display:flex; flex-direction:column; justify-content:center; gap:0.75rem; padding:1rem 0; }
+.fc-line { font-size:0.88rem; color:#bbb5aa; line-height:1.6; display:flex; gap:0.6rem; align-items:flex-start; }
+.fc-bullet { color:var(--accent); flex-shrink:0; margin-top:2px; }
+
+.fc-footer { display:flex; justify-content:space-between; align-items:flex-end; }
+.fc-company { font-size:0.88rem; font-weight:700; color:#ddd5c8; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.18rem; }
+.fc-meta { font-size:0.67rem; color:#505050; }
+.fc-cursor { font-size:1.1rem; color:#ddd5c8; animation:fcBlink 1s step-end infinite; }
+@keyframes fcBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ══════════════════════════════════════════════════════
+   CSS VARIABLES — folder paper colors for each theme
+══════════════════════════════════════════════════════ */
+:root {
+  --folder-tab-bg:  #1c1916;
+  --folder-border:  rgba(240,232,216,0.12);
+  --folder-text:    #e0d8cc;
+}
+[data-theme="light"] {
+  --folder-tab-bg:  #f0ebe2;
+  --folder-border:  rgba(30,24,20,0.18);
+  --folder-text:    #1a1614;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .folder-header-row { grid-template-columns:28px 1fr 100px; padding:0 14px; height:48px; }
+  .fh-role { display:none; }
+  .fh-date { font-size:0.6rem; }
+  .folder-physical-tab { left:12px; min-width:110px; }
+  .folder-card { padding:1.4rem 1.2rem; }
+  .fc-line { font-size:0.8rem; }
+  .exp-overlay { padding:70px 14px 16px; }
+}

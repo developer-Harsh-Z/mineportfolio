@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import './Contact.css';
 
@@ -20,7 +20,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 const TerminalOutput = ({ onComplete }) => {
   const [visibleLines, setVisibleLines] = useState(0);
   const onCompleteRef = useRef(onComplete);
-  onCompleteRef.current = onComplete;
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  });
 
   const fullLines = [
     "> initialising message payload...",
@@ -90,6 +92,7 @@ const ModeA = () => {
     const words = text.split(/\s+/).filter(w => w.length > 0);
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
     
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setWordCount(words.length);
     setSentenceCount(sentences.length);
     
@@ -149,7 +152,7 @@ const ModeA = () => {
     setSendState('sending');
 
     try {
-      const { data, error } = await supabase.functions.invoke('send-email', {
+      const { error } = await supabase.functions.invoke('send-email', {
         body: {
           name,
           email,
@@ -326,7 +329,7 @@ const ModeB = () => {
   const reqFrameRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const audioUrlRef = useRef('');
+  const [audioUrl, setAudioUrl] = useState('');
   const audioRef = useRef(null);
   
   const recognitionRef = useRef(null);
@@ -460,7 +463,7 @@ const ModeB = () => {
       };
       mediaRecorderRef.current.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        audioUrlRef.current = URL.createObjectURL(audioBlob);
+        setAudioUrl(URL.createObjectURL(audioBlob));
       };
 
       mediaRecorderRef.current.start();
@@ -491,7 +494,7 @@ const ModeB = () => {
     setTranscript('');
     setLiveWord('');
     setTime(0);
-    audioUrlRef.current = '';
+    setAudioUrl('');
   };
 
   const handleSubmit = async () => {
@@ -506,7 +509,7 @@ const ModeB = () => {
       const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
       const base64Audio = await blobToBase64(audioBlob);
 
-      const { data, error } = await supabase.functions.invoke('send-email', {
+      const { error } = await supabase.functions.invoke('send-email', {
         body: {
           name,
           email,
@@ -564,7 +567,7 @@ const ModeB = () => {
           <div className={`timer ${time >= 80 ? 'warning' : ''}`}>{formatTime(time)}</div>
 
           <div className="live-transcript-wrap">
-            <div className="viz-panel-label">// live transcript {!recognitionRef.current && "(available in Chrome)"}</div>
+            <div className="viz-panel-label">// live transcript {!(window.SpeechRecognition || window.webkitSpeechRecognition) && "(available in Chrome)"}</div>
             <div className="transcript-live-text">
               <span className="final-trans">{transcript}</span>
               <span className="interim-trans">{liveWord}</span>
@@ -582,7 +585,7 @@ const ModeB = () => {
             <div className="playback-info">
               <div className="playback-label">recorded: {formatTime(time)}</div>
             </div>
-            <audio ref={audioRef} src={audioUrlRef.current}></audio>
+            <audio ref={audioRef} src={audioUrl}></audio>
           </div>
 
           <div className="review-transcript">

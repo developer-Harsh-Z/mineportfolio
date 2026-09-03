@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './hbot.module.css';
 
 const SECTION_POSITIONS = {
@@ -30,7 +30,9 @@ RULES: If asked something not above, say "Harsh didn't upload that yet 🤖" Ans
 CONVERSATION: If you know the user's name, use it naturally. If they just told you their name, say something like "Nice to meet you, [Name]!"`;
 
 const HBot = () => {
-  const [mode, setMode] = useState('idle'); // idle | tour_prompt | tour_hint | touring | idle_walking | chat | sleeping
+  const [mode, setMode] = useState(() => {
+    return localStorage.getItem('hbot-dismissed') ? 'idle_walking' : 'idle';
+  }); // idle | tour_prompt | tour_hint | touring | idle_walking | chat | sleeping
   const [currentSection, setCurrentSection] = useState('hero');
   const [targetX, setTargetX] = useState(window.innerWidth * SECTION_POSITIONS.hero);
   const [currentX, setCurrentX] = useState(window.innerWidth * SECTION_POSITIONS.hero);
@@ -113,6 +115,7 @@ const HBot = () => {
 
     const ticker = requestAnimationFrame(moveBot);
     return () => cancelAnimationFrame(ticker);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentX, targetX, mode, pendingTourStep]);
 
   // 2.6 Idle Mascot Behaviors
@@ -183,7 +186,7 @@ const HBot = () => {
     }
   }, [mode]);
 
-  const runTourStep = useCallback(async (stepIndex) => {
+  async function runTourStep(stepIndex) {
     if (stepIndex >= TOUR_SCRIPT.length) {
       setMode('idle_walking');
       return;
@@ -200,28 +203,16 @@ const HBot = () => {
       window.scrollTo({ top, behavior: 'smooth' });
     }
 
-    // High-precision arrival tracking
-    let frameId;
-    const check = () => {
-      // Use the latest currentX from state isn't possible here easily, 
-      // but the moveBot ticker is updating currentX.
-      // We'll use a local ref or just check the DOM if needed, 
-      // but let's try reading currentX from state (it will be stale in this closure).
-      
-      // FIX: Use a timeout loop or just trust the moveBot ticker.
-      // Actually, I'll move the "next step" trigger into the moveBot ticker itself!
-    };
+    // High-precision arrival tracking handled in moveBot ticker
     
     // To avoid closure issues, we'll set a 'pendingTourStep' state
     setPendingTourStep(stepIndex);
-  }, []); 
+  }
 
   // Add pendingTourStep state at top
 
-  const startTyping = (lines, pause, onComplete) => {
+  function startTyping(lines, pause, onComplete) {
     setBubbleLines([]);
-    let lineIdx = 0;
-    
     const typeLine = (idx) => {
       if (idx >= lines.length) {
         setTimeout(onComplete, pause);
@@ -245,12 +236,14 @@ const HBot = () => {
   };
 
   const startTour = () => {
+    localStorage.setItem('hbot-dismissed', 'true');
     setMode('touring');
     tourStepRef.current = 0;
     runTourStep(0);
   };
 
   const handleNoTour = () => {
+    localStorage.setItem('hbot-dismissed', 'true');
     setMode('tour_hint');
   };
 

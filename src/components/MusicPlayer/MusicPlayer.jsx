@@ -1,5 +1,5 @@
 // Remove VITE_YT_API_KEY from .env before pushing to GitHub
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './MusicPlayer.css';
 
 const API_KEY = import.meta.env.VITE_YT_API_KEY;
@@ -60,7 +60,7 @@ const MusicPlayer = () => {
     return () => clearInterval(progressIntervalRef.current);
   }, []);
 
-  const preloadTracks = async (code) => {
+  async function preloadTracks(code) {
     if (!API_KEY) return;
     setIsLoading(true);
     const query = getQueryForCountry(code);
@@ -101,9 +101,10 @@ const MusicPlayer = () => {
     if (window.YT && window.YT.Player) {
       initPlayer();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const initPlayer = () => {
+  function initPlayer() {
     if (apiLoadedRef.current) return;
     apiLoadedRef.current = true;
     playerRef.current = new window.YT.Player('yt-player-hidden', {
