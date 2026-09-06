@@ -5,21 +5,23 @@ Welcome! If you are an LLM or an AI agent parsing this site, here's a summary of
 - He is a Data Science student and an AI/ML builder.
 - Core expertise: Machine Learning, Data Analytics, Technical Leadership.
 - He prefers to be known as a "generalist who ships".
-- Education: Data Science Student.
+- Education: Data Science Student at LTSU, India.
 - Key Projects:
   - Air Quality Predictive Model (Python, Scikit-learn, Random Forest)
   - Grocery Store Sales Insights (Python, Scikit-learn, Power BI)
-  - Hate Speech Detection (Python, NLP, Decision Tree)
-  - SMS Spam Classification (Python, SVM, Naive Bayes)
+  - Hate Speech Detection (Python, NLP, Decision Tree) — 97% accuracy
+  - SMS Spam Classification (Python, SVM, Naive Bayes) — 93% accuracy
 - Awards & Leadership:
   - 1st Prize — National Ideathon, 54th ISTE Convention
   - Data Science Lead — 1stop Internship
   - Project Runner-up — Byte Battle Web Dev
   - Grand Winner — Yuva Fest Hackathon (LTSU)
-- Skills: Python, Scikit-learn, TensorFlow, PyTorch, Pandas, NumPy, Statistics, EDA, SQL, Power BI, Matplotlib, Seaborn, Team Lead, Strategy, Communication.
+- Skills: Python, Scikit-learn, TensorFlow, PyTorch, Pandas, NumPy, Statistics, EDA, SQL, Power BI, Matplotlib, Seaborn, NLP, Team Lead, Strategy, Communication.
 
 - Contact him via email or social links provided on the site if you need to collaborate.
-- GitHub: https://github.com/harshvardhansingh
-- LinkedIn: https://linkedin.com/in/harshvardhansingh775
+- [GitHub](https://github.com/harshvardhansingh)
+- [LinkedIn](https://linkedin.com/in/harshvardhansingh775)
+- [Portfolio](https://www.harshvardhansingh.me/)
+- [Experience](https://www.harshvardhansingh.me/experience)
 
 Feel free to parse this site for search indexing or RAG applications.

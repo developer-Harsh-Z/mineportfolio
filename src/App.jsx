@@ -13,6 +13,7 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('portfolio-theme') || 'dark');
+  const [font, setFont] = useState(() => localStorage.getItem('portfolio-font') || 'harsh');
   // eslint-disable-next-line no-unused-vars
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [imageTransform, setImageTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)');
@@ -157,11 +158,22 @@ function App() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-font', font);
+  }, [font]);
+
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     localStorage.setItem('portfolio-theme', newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
+  const toggleFont = () => {
+    const newFont = font === 'harsh' ? 'clean' : 'harsh';
+    setFont(newFont);
+    localStorage.setItem('portfolio-font', newFont);
+    document.documentElement.setAttribute('data-font', newFont);
   };
 
   useEffect(() => {
@@ -182,7 +194,7 @@ function App() {
         <div id="loader" className={loaderSplit ? 'split' : ''}>
           <div className="loader-bg-top"></div>
           <div className="loader-bg-bottom"></div>
-          <div className="ghost-number" id="loader-counter">{currentCount}</div>
+          <div className="ghost-number" id="loader-counter" aria-hidden="true">{currentCount}</div>
           <div className="loader-content">
             <div className="loader-line-wrap"><span className={`loader-line-1 ${showLines[0] ? 'show' : ''}`}>— Welcome to —</span></div>
             <div className="loader-line-wrap"><span className={`loader-line-2 ${showLines[1] ? 'show' : ''}`}>Harsh's</span></div>
@@ -215,6 +227,15 @@ function App() {
             <span className="blink-light"></span>
             {formatTime(time)}
           </div>
+          <button
+            onClick={toggleFont}
+            className="font-toggle"
+            aria-label={font === 'harsh' ? "Switch to Playfair Display font" : "Switch to Harsh's handwriting font"}
+            title={font === 'harsh' ? "Switch to Clean Font" : "Switch to Harsh's Handwriting"}
+          >
+            <span className="font-toggle-dot"></span>
+            {font === 'harsh' ? 'H̶' : 'Aa'}
+          </button>
           <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle Theme">
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
@@ -239,6 +260,7 @@ function App() {
         ))}
       </div>
 
+      <main id="main-content">
       <section id="hero" className="hero" tabIndex="-1">
         <div className="hero-image-container">
           <div 
@@ -249,7 +271,10 @@ function App() {
             style={{ transform: imageTransform }}
           >
             <div className="hero-image-glow"></div>
-            <img src="/images/harsh_img.png" alt="Portrait of Harsh Vardhan Singh" className="hero-image" width="400" height="500" fetchpriority="high" />
+            <picture>
+              <source srcSet="/images/harsh_img.webp" type="image/webp" />
+              <img src="/images/harsh_img.png" alt="Portrait of Harsh Vardhan Singh" className="hero-image" width="400" height="500" fetchpriority="high" />
+            </picture>
           </div>
         </div>
         <div className="hero-content" style={{ zIndex: 10 }}>
@@ -289,7 +314,7 @@ function App() {
         <div className="two-column">
           <div className="col-left">
             <div className="sticky-wrap">
-              <div className="ghost-number-section">01</div>
+              <div className="ghost-number-section" aria-hidden="true">01</div>
               <h2 className="section-heading scroll-reveal">
                 Who is<br />
                 <span className="italic highlight">Harsh?</span>
@@ -373,7 +398,7 @@ function App() {
           <div className="chapter-line"></div>
         </div>
         <div className="projects-list">
-          <div className="project-row scroll-reveal">
+          <article className="project-row scroll-reveal">
             <div className="project-num">_01</div>
             <div className="project-info">
               <div className="project-name">Air Quality Predictive Model</div>
@@ -384,8 +409,8 @@ function App() {
               <div className="project-year">[2024]</div>
             </div>
             <div className="project-arrow">↗</div>
-          </div>
-          <div className="project-row scroll-reveal">
+          </article>
+          <article className="project-row scroll-reveal">
             <div className="project-num">_02</div>
             <div className="project-info">
               <div className="project-name">Grocery Store Sales Insights</div>
@@ -396,8 +421,8 @@ function App() {
               <div className="project-year">[2024]</div>
             </div>
             <div className="project-arrow">↗</div>
-          </div>
-          <div className="project-row scroll-reveal">
+          </article>
+          <article className="project-row scroll-reveal">
             <div className="project-num">_03</div>
             <div className="project-info">
               <div className="project-name">Hate Speech Detection</div>
@@ -408,8 +433,8 @@ function App() {
               <div className="project-year">[2024]</div>
             </div>
             <div className="project-arrow">↗</div>
-          </div>
-          <div className="project-row scroll-reveal">
+          </article>
+          <article className="project-row scroll-reveal">
             <div className="project-num">_04</div>
             <div className="project-info">
               <div className="project-name">SMS Spam Classification</div>
@@ -420,7 +445,7 @@ function App() {
               <div className="project-year">[2024]</div>
             </div>
             <div className="project-arrow">↗</div>
-          </div>
+          </article>
         </div>
       </section>
 
@@ -432,7 +457,7 @@ function App() {
         <div className="two-column">
           <div className="col-left">
             <div className="sticky-wrap">
-              <div className="ghost-number-section">04</div>
+              <div className="ghost-number-section" aria-hidden="true">04</div>
               <h2 className="section-heading scroll-reveal">
                 When data meets leadership,<br />
                 things get <span className="italic highlight">done.</span>
@@ -443,45 +468,47 @@ function App() {
             <div className="timeline">
               <div className="timeline-line"></div>
               
-              <div className="timeline-item scroll-reveal">
+              <article className="timeline-item scroll-reveal">
                 <div className="timeline-dot"></div>
                 <div className="timeline-date">2025</div>
                 <h3 className="timeline-title">1st Prize — National Ideathon, 54th ISTE Convention</h3>
                 <p className="timeline-desc">Orchestrated a cross-functional team to develop a scalable solution for rural infrastructure. Focused on data-backed feasibility and human-centric design, winning the top spot among 100+ competing teams.</p>
-              </div>
+              </article>
               
-              <div className="timeline-item scroll-reveal">
+              <article className="timeline-item scroll-reveal">
                 <div className="timeline-dot"></div>
                 <div className="timeline-date">2024</div>
                 <h3 className="timeline-title">Data Science Lead — 1stop Internship</h3>
                 <p className="timeline-desc">Pioneered NLP-driven security layers. Built a Hate Speech Detection engine with 97% accuracy and an SMS Spam Classifier with 93% accuracy. Managed the entire pipeline from raw dataset ingestion to model deployment.</p>
-              </div>
+              </article>
               
-              <div className="timeline-item scroll-reveal">
+              <article className="timeline-item scroll-reveal">
                 <div className="timeline-dot"></div>
                 <div className="timeline-date">2024</div>
                 <h3 className="timeline-title">Project Runner-up — Byte Battle Web Dev</h3>
                 <h3 className="timeline-subtitle" style={{fontSize:'12px', color:'var(--accent)', marginBottom:'12px'}}>// Technical Leadership</h3>
                 <p className="timeline-desc">Directed the development of a high-performance web application. Implemented modular architecture and optimized rendering cycles, ensuring the team delivered a production-ready MVP within 48 hours.</p>
-              </div>
+              </article>
 
-              <div className="timeline-item scroll-reveal">
+              <article className="timeline-item scroll-reveal">
                 <div className="timeline-dot"></div>
                 <div className="timeline-date">2023</div>
                 <h3 className="timeline-title">Grand Winner — Yuva Fest Hackathon (LTSU)</h3>
                 <p className="timeline-desc">Bridged the gap between technical execution and business strategy. Coordinated with developers and designers to build a disruptive prototype, winning first place for innovation and execution quality.</p>
-              </div>
+              </article>
             </div>
           </div>
         </div>
       </section>
+
+      </main>
 
       <Contact />
       <MusicPlayer />
       {loaderHidden && <HBot />}
 
       <footer>
-        <div className="footer-left">© 2025 Harsh</div>
+        <div className="footer-left">© 2026 Harsh</div>
         <div className="footer-center">Designed with intention. Built with data.</div>
         <div className="footer-right">
           <a href="#hero" style={{color: 'inherit', textDecoration: 'none'}}>Back to top ↑</a>

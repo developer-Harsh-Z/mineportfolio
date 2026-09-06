@@ -268,7 +268,7 @@ export default function ExperiencePage() {
 
         {/* Hero */}
         <motion.div className="exp-hero" style={{ opacity: heroOpacity }}>
-          <div className="ghost-number-section" style={{ opacity:0.06, userSelect:'none' }}>05</div>
+          <div className="ghost-number-section" aria-hidden="true" style={{ opacity:0.06, userSelect:'none' }}>05</div>
           <h1 className="section-heading">The <span className="italic highlight">Journey.</span></h1>
           <p className="exp-subtitle">// Scroll to flip through the files</p>
           <div className="exp-arrow">↓</div>

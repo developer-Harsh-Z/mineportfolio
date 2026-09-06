@@ -85,24 +85,23 @@ const MusicPlayer = () => {
     }
   };
 
-  // 2. YouTube IFrame API Setup
-  useEffect(() => {
-    if (!window.YT) {
+  // 2. YouTube IFrame API Setup — deferred until first user interaction
+  const loadYouTubeAPI = () => {
+    if (apiLoadedRef.current) return;
+    if (window.YT && window.YT.Player) {
+      initPlayer();
+      return;
+    }
+    window.onYouTubeIframeAPIReady = () => {
+      initPlayer();
+    };
+    if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       const firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
-
-    window.onYouTubeIframeAPIReady = () => {
-      initPlayer();
-    };
-
-    if (window.YT && window.YT.Player) {
-      initPlayer();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   function initPlayer() {
     if (apiLoadedRef.current) return;
@@ -201,8 +200,10 @@ const MusicPlayer = () => {
   const handleToggleExpand = () => {
     if (!isExpanded) {
       setIsExpanded(true);
-      // Auto-start if not playing and we have tracks
-      if (!isPlaying && videoList.length > 0) {
+      // Load YouTube API on first interaction (deferred for performance)
+      loadYouTubeAPI();
+      // Auto-start if not playing and we have tracks (only if player already ready)
+      if (!isPlaying && videoList.length > 0 && playerRef.current && apiLoadedRef.current) {
         const track = videoList[currentIndex];
         playerRef.current.loadVideoById(track.videoId);
         playerRef.current.playVideo();
