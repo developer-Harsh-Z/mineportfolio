@@ -1,0 +1,6 @@
+{
+  "routes": [
+    { "path": "/", "title": "Harsh Vardhan Singh | Data Scientist & AI/ML Builder" },
+    { "path": "/experience", "title": "Harsh Vardhan Singh | Experience" }
+  ]
+}

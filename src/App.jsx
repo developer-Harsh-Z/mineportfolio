@@ -6,10 +6,11 @@ import HBot from './components/HBot/HBot';
 import { Link } from 'react-router-dom';
 
 function App() {
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const [loaderSplit, setLoaderSplit] = useState(false);
-  const [loaderHidden, setLoaderHidden] = useState(false);
-  const [currentCount, setCurrentCount] = useState(0);
-  const [showLines, setShowLines] = useState([false, false, false]);
+  const [loaderHidden, setLoaderHidden] = useState(prefersReducedMotion);
+  const [currentCount, setCurrentCount] = useState(prefersReducedMotion ? 100 : 0);
+  const [showLines, setShowLines] = useState(prefersReducedMotion ? [true, true, true] : [false, false, false]);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('portfolio-theme') || 'dark');
@@ -79,13 +80,17 @@ function App() {
   useEffect(() => {
     // Loader Animation
     document.body.style.overflow = 'hidden';
+    if (prefersReducedMotion) {
+      document.body.style.overflow = '';
+      return undefined;
+    }
     
     let count = 0;
     const counterInterval = setInterval(() => {
       count++;
       setCurrentCount(count);
       if (count >= 100) clearInterval(counterInterval);
-    }, 25);
+    }, 12);
     
     setTimeout(() => setShowLines(prev => [true, prev[1], prev[2]]), 1000);
     setTimeout(() => setShowLines(prev => [prev[0], true, prev[2]]), 1200);
@@ -103,10 +108,10 @@ function App() {
           setTimeout(() => el.classList.add('visible'), index * 150);
         });
       }, 900);
-    }, 3000);
+    }, 1500);
     
     return () => clearInterval(counterInterval);
-  }, []);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -239,14 +244,20 @@ function App() {
           <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle Theme">
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-          <div className={`hamburger ${mobileMenuOpen ? 'active' : ''}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button
+            className={`hamburger ${mobileMenuOpen ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
+          >
             <span></span>
             <span></span>
-          </div>
+          </button>
         </div>
       </nav>
 
-      <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}>
+      <div id="mobile-navigation" className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`} aria-hidden={!mobileMenuOpen}>
         {['about', 'skills', 'projects'].map((id, i) => (
           <a key={i} href={`#${id}`} onClick={() => setMobileMenuOpen(false)}>
             {id.charAt(0).toUpperCase() + id.slice(1)}
@@ -403,6 +414,7 @@ function App() {
             <div className="project-info">
               <div className="project-name">Air Quality Predictive Model</div>
               <div className="project-tech">Python · Scikit-learn · Random Forest</div>
+              <p className="project-impact">Forecasting air-quality patterns to make environmental signals easier to act on.</p>
             </div>
             <div className="project-meta">
               <div className="project-badge">[AI/ML]</div>
@@ -415,6 +427,7 @@ function App() {
             <div className="project-info">
               <div className="project-name">Grocery Store Sales Insights</div>
               <div className="project-tech">Python · Scikit-learn · Power BI</div>
+              <p className="project-impact">Turning sales data into clearer inventory, performance, and decision-making signals.</p>
             </div>
             <div className="project-meta">
               <div className="project-badge">[Analytics]</div>
@@ -427,6 +440,7 @@ function App() {
             <div className="project-info">
               <div className="project-name">Hate Speech Detection</div>
               <div className="project-tech">Python · NLP · Decision Tree</div>
+              <p className="project-impact">Building a practical NLP safety layer with a measurable accuracy target.</p>
             </div>
             <div className="project-meta">
               <div className="project-badge">[AI/NLP]</div>
@@ -439,6 +453,7 @@ function App() {
             <div className="project-info">
               <div className="project-name">SMS Spam Classification</div>
               <div className="project-tech">Python · SVM · Naive Bayes</div>
+              <p className="project-impact">Classifying noisy messages into useful, trustworthy communication flows.</p>
             </div>
             <div className="project-meta">
               <div className="project-badge">[AI/ML]</div>

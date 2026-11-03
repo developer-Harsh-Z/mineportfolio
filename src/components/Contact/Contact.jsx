@@ -14,6 +14,15 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: false }
 });
 
+const TERMINAL_LINES = [
+  "> initialising message payload...",
+  "> validating fields............. ✓",
+  "> encoding sentiment data........ ✓",
+  "> dispatching to harsh@harshvardhansingh.me",
+  "> message delivered ✓",
+  "> exit code 0"
+];
+
 // ----------------------------------------------------
 // TERMINAL OUTPUT — runs exactly once, no infinite loop
 // ----------------------------------------------------
@@ -24,21 +33,12 @@ const TerminalOutput = ({ onComplete }) => {
     onCompleteRef.current = onComplete;
   });
 
-  const fullLines = [
-    "> initialising message payload...",
-    "> validating fields............. ✓",
-    "> encoding sentiment data........ ✓",
-    "> dispatching to harsh@harshvardhansingh.me",
-    "> message delivered ✓",
-    "> exit code 0"
-  ];
-
   useEffect(() => {
     let idx = 0;
     const tick = () => {
       idx++;
       setVisibleLines(idx);
-      if (idx < fullLines.length) {
+      if (idx < TERMINAL_LINES.length) {
         timer = setTimeout(tick, 220);
       } else {
         setTimeout(() => onCompleteRef.current?.(), 500);
@@ -46,11 +46,11 @@ const TerminalOutput = ({ onComplete }) => {
     };
     let timer = setTimeout(tick, 220);
     return () => clearTimeout(timer);
-  }, []); // ← empty dep array = runs exactly once
+  }, []);
 
   return (
     <div className="terminal-output">
-      {fullLines.slice(0, visibleLines).map((line, i) => (
+      {TERMINAL_LINES.slice(0, visibleLines).map((line, i) => (
         <div key={i} className="terminal-line">
           {line.includes('✓') ? (
             <>{line.split('✓')[0]}<span className="success-tick">✓</span>{line.split('✓')[1]}</>
@@ -707,4 +707,3 @@ export default function Contact() {
     </section>
   );
 }
-

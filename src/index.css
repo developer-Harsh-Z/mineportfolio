@@ -54,6 +54,15 @@ html, body {
   scroll-behavior: smooth;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+}
+
 body::after {
   content: "";
   position: fixed;
@@ -465,6 +474,9 @@ h1, h2, h3, h4, .harsh-font, .logo {
   gap: 6px;
   cursor: pointer;
   z-index: 1001;
+  background: transparent;
+  border: 0;
+  color: inherit;
 }
 
 .hamburger span {
@@ -936,6 +948,14 @@ h1, h2, h3, h4, .harsh-font, .logo {
   color: var(--text-muted);
 }
 
+.project-impact {
+  max-width: 520px;
+  margin-top: 14px;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
 .project-meta {
   text-align: right;
   display: flex;
@@ -1304,6 +1324,11 @@ footer {
   
   .project-name {
     font-size: 24px;
+  }
+
+  .project-impact {
+    font-size: 14px;
+    line-height: 1.5;
   }
   
   .project-row {
