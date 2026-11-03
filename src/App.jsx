@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 
 function App() {
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const [loaderSplit, setLoaderSplit] = useState(false);
-  const [loaderHidden, setLoaderHidden] = useState(prefersReducedMotion);
-  const [currentCount, setCurrentCount] = useState(prefersReducedMotion ? 100 : 0);
-  const [showLines, setShowLines] = useState(prefersReducedMotion ? [true, true, true] : [false, false, false]);
+  const [loaderSplit] = useState(false);
+  const [loaderHidden] = useState(true);
+  const [currentCount] = useState(prefersReducedMotion ? 100 : 0);
+  const [showLines] = useState(prefersReducedMotion ? [true, true, true] : [false, false, false]);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('portfolio-theme') || 'dark');
@@ -78,39 +78,13 @@ function App() {
   }, [loaderHidden]);
 
   useEffect(() => {
-    // Loader Animation
-    document.body.style.overflow = 'hidden';
-    if (prefersReducedMotion) {
-      document.body.style.overflow = '';
-      return undefined;
-    }
-    
-    let count = 0;
-    const counterInterval = setInterval(() => {
-      count++;
-      setCurrentCount(count);
-      if (count >= 100) clearInterval(counterInterval);
-    }, 12);
-    
-    setTimeout(() => setShowLines(prev => [true, prev[1], prev[2]]), 1000);
-    setTimeout(() => setShowLines(prev => [prev[0], true, prev[2]]), 1200);
-    setTimeout(() => setShowLines(prev => [prev[0], prev[1], true]), 1400);
-    
-    setTimeout(() => {
-      setLoaderSplit(true);
-      document.body.style.overflow = '';
-      
-      setTimeout(() => {
-        setLoaderHidden(true);
-        // Trigger hero reveal
-        const heroEls = document.querySelectorAll('.hero-el.scroll-reveal');
-        heroEls.forEach((el, index) => {
-          setTimeout(() => el.classList.add('visible'), index * 150);
-        });
-      }, 900);
-    }, 1500);
-    
-    return () => clearInterval(counterInterval);
+    document.body.style.overflow = '';
+    const heroEls = document.querySelectorAll('.hero-el.scroll-reveal');
+    const timers = [];
+    heroEls.forEach((el, index) => {
+      timers.push(window.setTimeout(() => el.classList.add('visible'), prefersReducedMotion ? 0 : index * 90));
+    });
+    return () => timers.forEach(clearTimeout);
   }, [prefersReducedMotion]);
 
   useEffect(() => {
