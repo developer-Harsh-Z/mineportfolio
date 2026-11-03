@@ -6,13 +6,9 @@ import './Contact.css';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.warn("Supabase credentials missing from .env file!");
-}
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: { persistSession: false }
-});
+const supabase = SUPABASE_URL && SUPABASE_ANON_KEY
+  ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false } })
+  : null;
 
 const TERMINAL_LINES = [
   "> initialising message payload...",
@@ -152,6 +148,7 @@ const ModeA = () => {
     setSendState('sending');
 
     try {
+      if (!supabase) throw new Error('Contact service is not configured yet.');
       const { error } = await supabase.functions.invoke('send-email', {
         body: {
           name,
@@ -506,6 +503,7 @@ const ModeB = () => {
     setSendState('sending');
 
     try {
+      if (!supabase) throw new Error('Contact service is not configured yet.');
       const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
       const base64Audio = await blobToBase64(audioBlob);
 
